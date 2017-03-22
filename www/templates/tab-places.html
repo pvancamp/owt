@@ -1,0 +1,32 @@
+<ion-view view-title="Places">
+	<ion-content>
+		<div class="item" style="text-align: center">
+			<div class="search-entry">
+				<input type="text" class="search-entry-input" placeholder="Selection Filter" ng-change="selListFilterChg()" ng-model="saveSelListUI.filter"></input>
+				<i class="ion ion-ios-search-strong search-entry-icon" style="left:275px"></i>
+				<a ng-click="filterFavs()">
+				<i class="ion search-entry-icon" ng-class="filterFavsClass()" style="right:1px"></i></a>
+			</div>
+			<button class="button" ng-click="saveSelList(1)">Save Selected</button>
+			<button class="button" ng-click="saveSelList(0)">Clear Selected</button>
+		</div>
+		<ion-list class="owt-list">
+			<div ng-if="items()">
+				<ion-item class="item-avatar item-icon-right" ng-repeat="item in items()"
+					href="#/tab/places/{{item.id}}">
+					<img class="owt-list-img" ng-src="{{item.pic}}">
+					<h2>{{item.name}}</h2>
+					<p>{{item.description}}</p>
+					<a ng-click="add(item.id)">
+					<i class="icon icon-add" ng-class="addButtonClass(item.id)">
+						{{addButtonPos(item.id)}}</i>
+					</a>
+					<!-- <i class="icon ion-chevron-right icon-accessory"></i> -->
+				</ion-item>
+			</div>
+			<div ng-if="!items()">
+				<h3>Waiting For Data</h3>
+			</div>
+		</ion-list>
+	</ion-content>
+</ion-view>
