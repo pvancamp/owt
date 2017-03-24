@@ -8,87 +8,297 @@ angular.module('owt.controllers', [])
 })
 .controller('DashCtrl', function($scope) {})
 
-.controller('PlacesCtrl', function(Places, $scope, $ionicModal ) {
+.controller('PlacesCtrl', function(Places, Tours, $scope, $ionicModal, $ionicScrollDelegate, $stateParams ) {
 	//$scope.$on('$ionicView.enter', function(e) {
 	//});
 
-	var selList= [];
-	var selFilterFavs= false;
-
 	$scope.pageType= 'Places';
 
+	//add to selected list
 	$scope.add= function(id) {
-		console.log('Add', id)
 		var itm= Places.get(id);
 		if ( itm ) {
 			itm.sel= ! itm.sel;
-			if ( itm.sel ) selList.push(itm.id);
-			else selList.splice( selList.indexOf(itm.id), 1);
+			if ( itm.sel ) Places.sel.list.push(itm.id);
+			else Places.sel.list.splice( Places.sel.list.indexOf(itm.id), 1);
 		}
 	};
-	$scope.addButtonClass= function(id) {
+	$scope.addButtonClass= function(id, deleteF) {
+		if ( deleteF ) return "ion-ios-close-outline red";
 		var itm= Places.get(id);
-		if ( itm && itm.sel ) return "black";
-		return "ion-ios-plus-outline black";
+		if ( itm ) {
+			if ( itm.sel ) return "black";
+			else if ( itm.fav ) return "ion-ios-heart black";
+		}
+		return "ion-ios-checkmark-outline black";
 	};
-	$scope.addButtonPos= function(id) {
+	$scope.addButtonPos= function(id, deleteF) {
+		if ( deleteF ) return '';
 		var itm= Places.get(id);
-		if ( itm && itm.sel ) return selList.indexOf(itm.id)+1;
+		if ( itm && itm.sel ) return Places.sel.list.indexOf(itm.id)+1;
 		return '';
 	};
+	$scope.delPlacesButtonClass= function() {
+		if ( $scope.saveSelListUI.delF )
+			return "ion-ios-minus red";
+		return "ion-ios-minus-outline black";
+	};
+	$scope.delPlacesButtonOp= function(id) {
+		var ix= $scope.saveSelListItems.findIndex( (itm) => {
+			return itm.id == id;
+		});
+		$scope.saveSelListItems.splice(ix, 1);
+	};
+
+	$scope.delPlacesButtonTog= function() {
+		$scope.saveSelListUI.delF= ! $scope.saveSelListUI.delF;
+		if ( $scope.saveSelListUI.delF )
+			$scope.saveSelListUI.reorderF= false;
+	};
+
 	$scope.filterFavs= function() {
-		selFilterFavs= !selFilterFavs;
-	}
+		Places.sel.filterFavs= !Places.sel.filterFavs;
+		$scope.selListFilterChg();
+	};
 	$scope.filterFavsClass= function() {
-		if ( selFilterFavs ) return "ion-ios-heart";
+		if ( Places.sel.filterFavs ) return "ion-ios-heart";
 		else return "ion-ios-heart-outline";
-	}
+	};
 	$scope.items= function() {
 		return Places.all();
+	};
+	$scope.itemsFiltered= function() {
+		if ( Places.sel && Places.sel.filterActive ) return Places.sel.filterList;
+		return $scope.items();
 	};
 	$scope.moveSelList= function(item, fromIndex, toIndex) {
     //Move the item in the array
     $scope.saveSelListItems.splice(fromIndex, 1);
     $scope.saveSelListItems.splice(toIndex, 0, item);
   };
+  $scope.posControlAreaClass= function(op) {
+  	if ( $scope.saveSelListUI.controlPosF ) {
+  		switch (op) {
+  			case 0: return "control-area-contained-large";
+  			case 1: return "control-area-slide";
+  			case 2: return "list-area-top-large";
+  		}
+  	}
+  	return "";
+  }
+  $scope.posControlAreaTog= function() {
+  	$scope.saveSelListUI.controlPosF= ! $scope.saveSelListUI.controlPosF;
+  };
+	$scope.reorderPlacesButtonTog= function() {
+		$scope.saveSelListUI.reorderF= ! $scope.saveSelListUI.reorderF;
+		if ( $scope.saveSelListUI.reorderF )
+			$scope.saveSelListUI.delF= false;
+	};
+
+	$scope.selListFilterChg= function() {
+		var flt= saveSelListUI.filter && saveSelListUI.filter.trim().toLowerCase();
+		if ( flt || Places.sel.filterFavs ) {
+			var reduceF= false;
+			Places.sel.filterActive= true;
+			Places.sel.filterList= [];
+			$scope.items().forEach( (itm) => {
+				if ( (!Places.sel.filterFavs || itm.fav) && (!flt || itm.name.toLowerCase().indexOf(flt) >= 0 ) )
+					Places.sel.filterList.push(itm);
+				else
+					reduceF= true;
+			});
+			if ( reduceF ) {
+				//make sure we can see everything
+				$ionicScrollDelegate.scrollTop();
+			}
+		}
+		else Places.sel.filterActive= false;
+		//console.log('selListFilterChg', Places.sel.filterActive, Places.sel.filterList.length);
+	};
+
+	$scope.selListFilterClear= function() {
+		saveSelListUI.filter= '';
+		$scope.selListFilterChg();
+	}
+	
 	$scope.saveSelList= function(op) {
 		if ( op ) {
+			modalToolbarSetState(1);
+			$scope.saveSelListUI.delF= false;
 			$scope.saveSelListUI.modal.show();
 			$scope.saveSelListItems= [];
-			selList.forEach( (id) => {
+			Places.sel.list.forEach( (id) => {
 				var itm= Places.get(id);
 				if (itm) $scope.saveSelListItems.push(itm);
 			});
 		} else {
-			selList.forEach( (id) => {
+			//clear the list of selected
+			Places.sel.list.forEach( (id) => {
 				var itm= Places.get(id);
 				if (itm) itm.sel= 0;
 			});
-			selList= [];
+			Places.sel.list= [];
 		}
+	};
+	$scope.saveSelListClick= function(itm) {
+		//console.log('saveSelListClick', itm.id);
 	};
 	$scope.saveSelListDialogFunc= function(op) {
 		switch (op) {
-			case 0:
+			case 0: //Reorder
+				var chgF= false;
+				for ( var ii= 0; ii < Places.sel.list.length; ii++ ) {
+					if ( Places.sel.list[ii] != $scope.saveSelListItems[ii].id ) {
+						chgF= true;
+						break;
+					}
+				}
+				if ( chgF ) {
+					//recreate the orginal list
+					$scope.saveSelListItems= [];
+					Places.sel.list.forEach( (id) => {
+						var itm= Places.get(id);
+						if (itm) $scope.saveSelListItems.push(itm);
+					});
+				} else {
+					//reverse the list order
+					$scope.saveSelListItems.reverse();
+				}
+				break;
+			case 1: //Save To Favs
+				Places.favsStor( $scope.saveSelListItems, true );
+				$scope.selListFilterChg();
+				break;
+			case 2: // Remove From Favs
+				Places.favsStor( $scope.saveSelListItems, false );
+				$scope.selListFilterChg();
+				break;
+			case 3: //Create A Tour
+				saveSelListUI.modal.hide();
+				saveSelListUI.modalForTour.show();
+				break;
+			case 4: //Create A Tour -- Cancel
+				saveSelListUI.modalForTour.hide();
+				break;
+			case 5: //Create A Tour -- Step 2
+				saveSelListUI.modalForTour.hide();
+				var places= [];
+				$scope.saveSelListItems.forEach( (itm) => {
+					places.push(itm.id);
+				});
+				var tour= {
+					name: saveSelListUI.name,
+					description: saveSelListUI.desc,
+					places: places,
+					pic: 'img/icons/buildingIcon.png',
+				};
+				Tours.add( tour );
+				break;
+		}
+	};
+
+	$scope.saveSelModalToolbar= function(op) {
+		//console.log('saveSelModalToobar', op);
+		modalToolbarSetState(op);
+
+		switch (op) {
+		case 1: //buttons
+			$scope.saveSelListUI.controlPosF= false;
+			break;
+		case 2: //map all
+			$scope.saveSelListUI.controlPosF= true;
+			break;
+		case 3: //map selected
+			$scope.saveSelListUI.controlPosF= true;
+			break;
+		case 4: //map me
+			$scope.saveSelListUI.controlPosF= true;
+			break;
+
+		case 0: //Close The Modal
 				saveSelListUI.modal.hide();
 				break;
 		}
+	};
+	$scope.saveSelModalToolbarClass= function(op) {
+		var ii= '';
+		switch ( op ) {
+			case 0: ii= 'ion-ios-close'; break;
+			case 1: ii= 'ion-ios-gear'; break;
+			case 2: ii= 'ion-ios-world'; break;
+			case 3: ii= 'ion-ios-location'; break;
+			case 4: ii= 'ion-ios-navigate'; break;
+		}
+		if ( $scope.saveSelModalToolbarState != op )
+			ii += '-outline';
+		return ii;
 	}
+
+	//////////////////////////////////////////////////////////////////////
+
+	if ( $stateParams.id ) {
+		//this is the details page
+		$scope.item= Places.get( $stateParams.id );
+
+		var items= $scope.itemsFiltered();
+		var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
+		$scope.slider= {
+			options: {
+				initialSlide: initIx,
+      	direction: 'horizontal', //or vertical
+      	speed: 300 //0.3s transition
+			},
+			delegate: null,
+		};
+
+    $scope.$watch('slider.delegate', function(newVal, oldVal) {
+      if (newVal != null) {
+        $scope.slider.delegate.on('slideChangeEnd', function() {
+          $scope.item= items[ $scope.slider.delegate.activeIndex ];
+          //use $scope.$apply() to refresh any content external to the slider
+          $scope.$apply();
+        });
+      }
+    });
+
+		console.log('PlacesCtrl', $stateParams.id, 'selFilterActive', Places.sel.filterActive, items.length, initIx);
+
+	} else {
+		//Create an object for seletion and filtering. Attach it to Places so it
+		// can be shared with details pages.
+		Places.sel= {
+			filterActive: false,
+			filterList: [],
+			filterFavs: false,
+			list: [],
+		};
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	//change the tool bar state used in the save places modal
+	$scope.saveSelModalToolbarState= 1;
+	function modalToolbarSetState(val) {
+		$scope.saveSelModalToolbarState= val;
+	}
+
 
 	var saveSelListUI= {};
 	$scope.saveSelListUI= saveSelListUI;
 	
-	$ionicModal.fromTemplateUrl('templatesaveSelList.html', {
+	$ionicModal.fromTemplateUrl('templates/modal-savePlaces.html', {
 		scope: $scope,
 		animation: 'slide-in-up',
 	}).then(function(modal) {
 		 saveSelListUI.modal= modal;
 	});
 
-})
+	$ionicModal.fromTemplateUrl('templates/modal-saveTour.html', {
+		scope: $scope,
+		animation: 'slide-in-up',
+	}).then(function(modal) {
+		 saveSelListUI.modalForTour= modal;
+	});
 
-.controller('PlacesDetailCtrl', function(Places, $scope, $stateParams) {
-	$scope.item = Places.get($stateParams.id);
 })
 
 .controller('ToursCtrl', function(Tours, $scope) {

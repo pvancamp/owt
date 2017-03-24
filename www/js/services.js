@@ -1,5 +1,5 @@
 angular.module('owt.services', [])
-.factory('owtDatabase', function() {
+.factory('owtFirebase', function() {
   // Initialize Firebase
   var config = {
     apiKey: "AIzaSyAA_shTfFs112y4S9pc2mfuZsRsVQwFR7s",
@@ -9,16 +9,28 @@ angular.module('owt.services', [])
     messagingSenderId: "755392357336"
   };
   firebase.initializeApp(config);
-  //console.log('owtDatabase', firebase.database() );
+  //console.log('owtFirebase', firebase.database() );
 
   return {
+  	authCreate: function(email, password, retFunc) {
+  		//creates does login
+  		firebase.createUserWithEmailAndPassword(email, password).then( retFunc ).catch( retFunc );
+  	},
+  	authLogin: function(email, password, retFunc) {
+  		firebase.signInWithEmailAndPassword(email, password).then( retFunc ).catch( retFunc );
+  	},
+  	authLogout: function(retFunc) {
+  		firebase.signOut().then( retFunc ).catch( retFunc );
+  	},
+  	authUser: function() { return firebase.auth().currentUser; },
+
   	places: function() {
   		return firebase.database().ref('historic-locations/orlando').once('value');
-  	}
+  	},
   };
 })
 
-.factory('Places', function(owtDatabase, $ionicLoading, $rootScope) {
+.factory('Places', function(owtFirebase, $ionicLoading, $rootScope) {
 	var itemsAsObj, itemsAsList, itemsLoaded;
 
 	function items() {
@@ -26,8 +38,8 @@ angular.module('owt.services', [])
 			itemsLoaded= true;
 			/************
 			$ionicLoading.show();
-			owtDatabase.places().then( (snap) => {
-  			console.log('owtDatabase places', snap.val());
+			owtFirebase.places().then( (snap) => {
+  			console.log('owtFirebase places', snap.val());
   			$ionicLoading.hide();
   			itemsAsObj= snap.val();
   			$rootScope.$apply();
@@ -39,11 +51,6 @@ angular.module('owt.services', [])
 	}
 
 	return {
-		add: function(item) {
-			angular.extend( itemsAsObj, item );
-			if ( itemsAsList )
-				itemsAsList.push( item );
-		},
 		all: function() {
 			if ( ! items() ) return null;
 
@@ -72,6 +79,11 @@ angular.module('owt.services', [])
 			}
 			return itemsAsList;
 		},
+		favsStor: function(selList, val) {
+			selList.forEach( (itm) => {
+				itm.fav= val;
+			});
+		},
 		get: function(id) {
 			return items()[id];
 		},
@@ -89,28 +101,61 @@ angular.module('owt.services', [])
 })
 
 .factory('Tours', function() {
-	var items= {};
-	var itemsAsList;
+	var itemsAsObj, itemsAsList, itemsLoaded;
+
+	function items() {
+		if ( ! itemsLoaded ) {
+			itemsLoaded= true;
+			/************
+			$ionicLoading.show();
+			owtFirebase.tours().then( (snap) => {
+  			console.log('owtFirebase tours', snap.val());
+  			$ionicLoading.hide();
+  			itemsAsObj= snap.val();
+  			$rootScope.$apply();
+  		});
+			***********/
+			itemsAsObj= {};
+		}
+		return itemsAsObj;
+	}
 
 	return {
-		add: function(item) {
-			angular.extend( items, item );
-			if ( itemsAsList )
-				itemsAsList.push( item );
+		add: function(data) {
+			var tour= { }
 		},
 		all: function() {
+			if ( ! items() ) return null;
+
 			if ( ! itemsAsList ) {
 				itemsAsList= [];
-				itemsAsList.sort( (a,b) => { return(a.id - b.id) } );
+				angular.forEach(items(), (vals, key) => {
+					vals.id= key;
+					itemsAsList.push( vals );
+				});
+				itemsAsList.sort( (a,b) => { return(a.name - b.name) } );
+				console.log('Places all', itemsAsList);
 			}
 			return itemsAsList;
 		},
+		favsStor: function(selList, val) {
+			selList.forEach( (itm) => {
+				itm.fav= val;
+			});
+		},
 		get: function(id) {
-			return items[id];
+			return items()[id];
 		},
 		remove: function(id) {
-			delete items[id];
+			delete items()[id];
 		},
+		selected: function() {
+			var selList= [];
+			itemsAsList.forEach( (itm) => {
+				if ( itm.sel ) selList.push( itm );
+			});
+			return selList;
+		}
 	};
 })
 ;

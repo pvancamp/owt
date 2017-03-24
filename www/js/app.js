@@ -20,6 +20,10 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 			// org.apache.cordova.statusbar required
 			StatusBar.styleDefault();
 		}
+		if ( screen.lockOrientation ) {
+			//always will be in portrait mode
+			screen.lockOrientation('portrait');
+		}
 	});
 })
 
@@ -73,8 +77,8 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 			url: '/places/:id',
 			views: {
 				'tab-places': {
-					templateUrl: 'templates/tab-item-detail.html',
-					controller: 'PlacesDetailCtrl'
+					templateUrl: 'templates/tab-places-detail.html',
+					controller: 'PlacesCtrl'
 				}
 			}
 		})
@@ -92,7 +96,7 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 			url: '/tours/:id',
 			views: {
 				'tab-tours': {
-					templateUrl: 'templates/tab-item-detail.html',
+					templateUrl: 'templates/tab-tours-detail.html',
 					controller: 'ToursDetailCtrl'
 				}
 			}

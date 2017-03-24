@@ -1,42 +1,130 @@
 /* Empty. Add your own CSS if you like */
 
-.button {
-	border-radius: 6px;
-	box-shadow: 
-		0px 1px 2px rgba(168, 161, 155, 0.5), 
-		inset 0px 0px 2px rgba(54, 47, 3, 0.5);	
+.button .icon::before, 
+	.button.icon::before, 
+		.button.icon-left::before, 
+			.button.icon-right::before {
+	line-height: inherit;
+}
+.but-toolbar {
+	position: relative;
+	display: inline-table;
+	border: 0;
+	color: black;
+	margin: 0;
+	margin-bottom: 4px;
+	padding: 0;
+	cursor: pointer;
+	text-align: center;
+	font-size: 12px;
+	line-height: 14px
+}
+.but-toolbar i {
+	font-size: 18px;
+}
+.owt-content {
+	bottom: 150px
+}
+.owt-details .select-icon {
+	float: right;
+	font-size: 28px;
+	margin: 4px 10px 4px 4px;
 	min-height: 30px;
-	font-size: 14px;
-	line-height: 36px;
+	min-width: 30px;
 }
-.button:active {
-	box-shadow: inset 0 1px 0 0 #fff6ce,inset 0 -1px 0 0 #e3c852,inset 0 0 0 1px #fce88d;
-}
-.owt-list .item h2 { font-size: 14px;}
+.owt-list .item h2 { font-size: 14px; text-align: left; }
 .owt-list .item p { font-size: 10px;}
-.owt-list .item-avatar {min-height: 30px;}
+.owt-list .item-avatar {
+	min-height: 30px;
+	padding: 0;
+}
 .owt-list .item .item-content {
 	min-height: 30px;
 	padding: 8px 54px 8px 72px;
-}
-.item-avatar > img:first-child, .item-avatar .item-image,
- .item-avatar .item-content > img:first-child,
-  .item-avatar .item-content .item-image,
-   .item-avatar-left > img:first-child,
-    .item-avatar-left .item-image,
-     .item-avatar-left .item-content > img:first-child,
-      .item-avatar-left .item-content .item-image {
-	top: 8px;
 }
 .owt-list .icon-add {
 	right: 0px;
 	width: 40px;
 	font-size: 28px
 }
-
-#saveSelList .item-right-edit {
-	width: 100%;
+.owt-list-controls {
+	text-align: center;
+	top: 44px;
 }
+.owt-modal .control-area {
+	height: 100px;
+	text-align: center;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+    -webkit-transform: translate(0,-200px);
+    -moz-transform: translate(0,-200px);
+    transform: translate(0,-200px);
+}
+.owt-modal .control-area-contained {
+	height: 100px;
+	overflow: hidden;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+.owt-modal .control-area-contained-large {
+	height: 200px;
+}
+.owt-modal .control-area-slide {
+    -webkit-transform: translate(0,0px);
+    -moz-transform: translate(0,0px);
+    transform: translate(0,0px);
+}
+.owt-modal .control-area-header {
+	height: 180px;
+	background-color: lightblue;
+	margin-bottom: 20px;
+}
+.owt-modal .edit-del {
+	position: absolute;
+	top: 6px;
+	left: 10px;
+}
+.owt-modal .edit-icon {
+	font-size: 30px;
+	margin: 4px 10px 4px 4px;
+	min-height: 30px;
+	min-width: 30px;
+}
+.owt-modal .edit-reorder {
+	position: absolute;
+	top: 6px;
+	right: 10px;
+}
+.owt-modal .list-area-top {
+	top: 200px;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+.owt-modal .list-area-top-large {
+	top: 280px;
+	z-index: 2;
+}
+.owt-modal .item-right-edit {
+	left: -5px;
+	right: auto;
+	-webkit-transform: translate3d(-75px, 0, 0);
+	transform: translate3d(-75px, 0, 0);
+}
+
+.owt-modal .tabs {
+	top: 44px;
+	bottom: auto;
+	height: 32px;
+	line-height: 30px
+}
+.owt-modal .tab-item .icon {
+	height: 20px;
+	font-size: 20px;
+}
+
 .save-mark { 
 	font-size: 28px;
 	margin: 0px 4px;
@@ -48,7 +136,7 @@
 .search-entry .search-entry-input {
 	position: absolute;
 	top: 0;
-	left: 20px;
+	left: 30px;
 	width: 240px;
 	height: 28px;
 	line-height: 16px;
@@ -57,12 +145,99 @@
 	position: absolute;
 	top: 0;
 	font-size: 26px;
+	color: black;
 }
 
+/******** ionic overrides **********/
+.button {
+	border-radius: 6px;
+	box-shadow: 
+		0px 1px 2px rgba(168, 161, 155, 0.5), 
+		inset 0px 0px 2px rgba(54, 47, 3, 0.5);	
+	min-height: 30px;
+	font-size: 14px;
+	line-height: 30px;
+}
+.button:active {
+	box-shadow: inset 0 1px 0 0 #fff6ce,inset 0 -1px 0 0 #e3c852,inset 0 0 0 1px #fce88d;
+}
+.button:disabled {
+	opacity: 0.65; 
+	cursor: not-allowed;
+	background-color: #999;
+}
+.button-block {
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+.item {
+	font-size: 14px;
+	padding: 10px;
+}
+.item-avatar > img:first-child, .item-avatar .item-image,
+ .item-avatar .item-content > img:first-child,
+  .item-avatar .item-content .item-image,
+   .item-avatar-left > img:first-child,
+	.item-avatar-left .item-image,
+	 .item-avatar-left .item-content > img:first-child,
+	  .item-avatar-left .item-content .item-image {
+	top: 8px;
+}
+.item-checkbox {
+    padding-left: 60px;
+}
+.item-input {
+	padding: 2px 0 3px 8px;
+}
+.item-radio .radio-content .item-content {
+	background-color: inherit;
+	padding: 8px 20px 8px 8px;
+}
+.item-radio .radio-content .radio-icon {
+	padding: 4px;
+	font-size: 18px;
+}
+
+.item-toggle .toggle {
+	top: 4px;
+}
+label {
+	line-height: 1;
+}
+label.disabled {
+	background-color: #aaa;
+	font-style: italic;
+}
+.label {
+	font-weight: bold;
+}
+.toggle .track {
+	height: 30px;
+}
+.toggle .handle {
+	width: 28px;
+	height: 28px;
+	top: 6px;
+	left: 8px;
+}
+ul.owt-list, ol.owt-list {
+	list-style: disc;
+	margin-bottom: 14px;
+	margin-top: 14px;
+	padding-left: 40px;
+}
 
 /******* generic *********/
-h3 {
+h1, h2, h3, h4, h5, h6 {
 	text-align: center;
+	margin-top: 8px;
+	margin-bottom: 4px;	
+}
+
+h2 {
+	font-size: 18px;
+}
+h3 {
 	font-size: 16px;
 }
 i {font-style: italic;}
@@ -79,14 +254,21 @@ input[type="text"], input[type="password"], textarea {
 	margin-right: 5px;
 }
 
+.background-grey { background-color: grey}
 .black { color: black; }
 .blue { color: blue; }
-
+.clear {float: none; }
+.float-left { float: left;}
+.float-right { float: right;}
 .font16 { font-size: 16px; }
 .font18 { font-size: 18px; }
 .font24 { font-size: 24px; }
-
+.font28 { font-size: 28px; }
+.heightMax { height: 100%; }
+.margin4 { margin: 4px; }
 .min-width-160 { min-width: 160px; }
 .position-relative { position: relative;}
+.red { color: red; }
 .text-center { text-align: center;}
+.text-left { text-align: left;}
 

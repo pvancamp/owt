@@ -43,46 +43,5 @@
 			The views will be rendered in the <ion-nav-view> directive below
 		-->
 		<ion-nav-view></ion-nav-view>
-
-		<!-- Template for displaying software update option -->
-		<script type="text/ng-template" id="templatesaveSelList.html">
-			 <ion-modal-view>
-				<ion-header-bar>
-					<h1 class= "title">Save Places</h1>
-				</ion-header-bar>
-				
-				<ion-content>
-					<div class="item text-center">
-							<button class= "button icon icon-left ion-ios-heart min-width-160"
-								ng-click="saveSelListDialogFunc(1)">Save To Favs</button>
-							<button class= "button icon icon-left ion-ios-heart-outline min-width-160"
-								ng-click="saveSelListDialogFunc(2)">Rm From Favs</button>
-								</br>
-							<button class= "button icon icon-left ion-ios-infinite min-width-160"
-								ng-click="saveSelListDialogFunc(3)">Save As Tour</button>
-							<button class= "button icon icon-left ion-ios-close min-width-160"
-								ng-click="saveSelListDialogFunc(0)">Cancel</button>
-								<h4 style="margin-top: 8px">Drag Items to Reorder List</h4>
-					</div>
-					<ion-list id="saveSelList" class="owt-list">
-						<div ng-if="saveSelListItems.length">
-							<ion-item class="item-avatar" ng-repeat="item in saveSelListItems">
-								<img ng-src="{{item.pic}}">
-								<h2>{{item.name}}</h2>
-								<p>{{item.description}}</p>
-								<ion-reorder-button class="ion-navicon"
-											on-reorder="moveSelList(item, $fromIndex, $toIndex)">
-								</ion-reorder-button>
-							</ion-item>
-						</div>
-						<div ng-if="!saveSelListItems.length">
-							<h3>No Places To Save</h3>
-						</div>
-					</ion-list>
-				</ion-content>
-			 </ion-modal-view>
-		</script>
-
-
 	</body>
 </html>
