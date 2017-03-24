@@ -1,0 +1,81 @@
+ <ion-view view-title="Places Edit" class="owt-modal">
+ 	<!--
+	<ion-header-bar>
+		<h1 class= "title">Save Places</h1>
+	</ion-header-bar>
+-->
+		<div style="height: 44px"></div>
+		<div class="owt-toolbar">
+			<a ng-click="saveSelModalToolbar(1)"><div class="but-toolbar" style="width:20%">
+				<i class="icon" ng-class="saveSelModalToolbarClass(1)"></i><div>Buttons</div>
+			</div></a><a ng-click="saveSelModalToolbar(2)"><div class="but-toolbar" style="width:20%">
+				<i class="icon" ng-class="saveSelModalToolbarClass(2)"></i><div>Map All</div>
+			</div></a><a ng-click="saveSelModalToolbar(3)"><div class="but-toolbar" style="width:20%">
+				<i class="icon" ng-class="saveSelModalToolbarClass(3)"></i><div>Map Sel</div>
+			</div></a><a ng-click="saveSelModalToolbar(4)"><div class="but-toolbar" style="width:20%">
+				<i class="icon" ng-class="saveSelModalToolbarClass(4)"></i><div>Map Me</div>
+			</div></a><a ng-click="saveSelModalToolbar(0)"><div class="but-toolbar" style="width:20%">
+				<i class="icon" ng-class="saveSelModalToolbarClass(0)"></i><div>Close</div>
+			</div></a>
+		</div>
+
+		<div class="item control-contained" ng-class="posControlAreaClass(0)">
+			<div class="control-area" ng-class="posControlAreaClass(1)">
+				<div class="control-area-header"></div>
+				<button class= "button icon icon-left ion-ios-heart min-width-160"
+					ng-click="saveSelListDialogFunc(1)">Add To Favs</button>
+				<button class= "button icon icon-left ion-ios-heart-outline min-width-160"
+					ng-click="saveSelListDialogFunc(2)">Rm From Favs</button>
+					</br>
+				<button class= "button icon icon-left ion-ios-infinite min-width-160"
+					ng-click="saveSelListDialogFunc(3)">Save As Tour</button>
+				<button class= "button icon icon-left ion-ios-shuffle-strong min-width-160"
+					ng-click="saveSelListDialogFunc(0)">Revert Order</button>
+				<div class="position-relative widthMax">
+					<div class="edit-del">
+						<a ng-click="delPlacesButtonTog()">
+							<i class="icon edit-icon"
+								ng-class="delPlacesButtonClass()"></i>
+						</a>
+					</div>
+					<div class="edit-reorder">
+						<button class= "button icon icon-left ion-ios-shuffle-strong"
+							ng-click="reorderPlacesButtonTog()">Reorder
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	<div>
+		<ion-content class="list-area-top" ng-class="posControlAreaClass(2)">
+			<ion-list id="saveSelList" class="owt-list"
+				show-delete="saveSelListUI.delF"
+				show-reorder="saveSelListUI.reorderF"
+				>
+				<div ng-if="saveSelListItems.length">
+					<ion-item class="item-avatar item-icon-right" ng-repeat="item in saveSelListItems"
+						ng-click="saveSelListClick(item)"
+						ng-href="{{saveSelListHref(item)}}">
+						<img ng-src="{{item.pic}}">						
+						<h2>{{item.name}}</h2>
+						<p>{{item.description}}</p>
+						<i class="icon" ng-class="addButtonClass(item.id, saveSelListUI.delF)">
+							{{addButtonPos(item.id, saveSelListUI.delF)}}</i>
+						<ion-delete-button class="ion-minus-circled"
+							ng-click="delPlacesButtonOp(item.id)">
+						</ion-delete-button>
+						<ion-reorder-button class="ion-ios-shuffle-strong"
+							on-reorder="moveSelList(item, $fromIndex, $toIndex)">
+						</ion-reorder-button>
+					</ion-item>
+				</div>
+				<div ng-if="!saveSelListItems.length">
+					<ion-item>
+						<h3>No Places To Save</h3>
+					</ion-item>
+				</div>
+			</ion-list>
+		</ion-content>
+	</div>
+ </ion-view>

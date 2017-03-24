@@ -8,7 +8,8 @@ angular.module('owt.controllers', [])
 })
 .controller('DashCtrl', function($scope) {})
 
-.controller('PlacesCtrl', function(Places, Tours, $scope, $ionicModal, $ionicScrollDelegate, $stateParams ) {
+.controller('PlacesCtrl', function(Places, Tours, $scope, 
+	$ionicModal, $ionicScrollDelegate, $location, $stateParams ) {
 	//$scope.$on('$ionicView.enter', function(e) {
 	//});
 
@@ -68,7 +69,12 @@ angular.module('owt.controllers', [])
 		return Places.all();
 	};
 	$scope.itemsFiltered= function() {
-		if ( Places.sel && Places.sel.filterActive ) return Places.sel.filterList;
+		if ( $location.path().indexOf('/places-edit') >= 0 )
+			return Places.saveSelListItems;
+
+		if ( Places.sel && Places.sel.filterActive )
+			return Places.sel.filterList;
+		
 		return $scope.items();
 	};
 	$scope.moveSelList= function(item, fromIndex, toIndex) {
@@ -77,7 +83,7 @@ angular.module('owt.controllers', [])
     $scope.saveSelListItems.splice(toIndex, 0, item);
   };
   $scope.posControlAreaClass= function(op) {
-  	if ( $scope.saveSelListUI.controlPosF ) {
+  	if ( $scope.saveSelListUI.mapPosF ) {
   		switch (op) {
   			case 0: return "control-area-contained-large";
   			case 1: return "control-area-slide";
@@ -87,7 +93,7 @@ angular.module('owt.controllers', [])
   	return "";
   }
   $scope.posControlAreaTog= function() {
-  	$scope.saveSelListUI.controlPosF= ! $scope.saveSelListUI.controlPosF;
+  	$scope.saveSelListUI.mapPosF= ! $scope.saveSelListUI.mapPosF;
   };
 	$scope.reorderPlacesButtonTog= function() {
 		$scope.saveSelListUI.reorderF= ! $scope.saveSelListUI.reorderF;
@@ -125,12 +131,12 @@ angular.module('owt.controllers', [])
 		if ( op ) {
 			modalToolbarSetState(1);
 			$scope.saveSelListUI.delF= false;
-			$scope.saveSelListUI.modal.show();
 			$scope.saveSelListItems= [];
 			Places.sel.list.forEach( (id) => {
 				var itm= Places.get(id);
 				if (itm) $scope.saveSelListItems.push(itm);
 			});
+			placesPageSwitch(0);
 		} else {
 			//clear the list of selected
 			Places.sel.list.forEach( (id) => {
@@ -141,8 +147,13 @@ angular.module('owt.controllers', [])
 		}
 	};
 	$scope.saveSelListClick= function(itm) {
-		//console.log('saveSelListClick', itm.id);
+		console.log('saveSelListClick', itm.id);
 	};
+	$scope.saveSelListHref= function(itm) {
+		if ( $scope.saveSelListUI.mapPosF ) return '';
+		return '#/tab/places-edit/'+itm.id
+	}
+
 	$scope.saveSelListDialogFunc= function(op) {
 		switch (op) {
 			case 0: //Reorder
@@ -174,7 +185,6 @@ angular.module('owt.controllers', [])
 				$scope.selListFilterChg();
 				break;
 			case 3: //Create A Tour
-				saveSelListUI.modal.hide();
 				saveSelListUI.modalForTour.show();
 				break;
 			case 4: //Create A Tour -- Cancel
@@ -203,20 +213,20 @@ angular.module('owt.controllers', [])
 
 		switch (op) {
 		case 1: //buttons
-			$scope.saveSelListUI.controlPosF= false;
+			$scope.saveSelListUI.mapPosF= false;
 			break;
 		case 2: //map all
-			$scope.saveSelListUI.controlPosF= true;
+			$scope.saveSelListUI.mapPosF= true;
 			break;
 		case 3: //map selected
-			$scope.saveSelListUI.controlPosF= true;
+			$scope.saveSelListUI.mapPosF= true;
 			break;
 		case 4: //map me
-			$scope.saveSelListUI.controlPosF= true;
+			$scope.saveSelListUI.mapPosF= true;
 			break;
 
-		case 0: //Close The Modal
-				saveSelListUI.modal.hide();
+		case 0: //Return to orginating page
+				placesPageSwitch(true);
 				break;
 		}
 	};
@@ -236,12 +246,14 @@ angular.module('owt.controllers', [])
 
 	//////////////////////////////////////////////////////////////////////
 
+	var saveSelListUI= {};
 	if ( $stateParams.id ) {
 		//this is the details page
 		$scope.item= Places.get( $stateParams.id );
 
 		var items= $scope.itemsFiltered();
 		var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
+
 		$scope.slider= {
 			options: {
 				initialSlide: initIx,
@@ -262,17 +274,33 @@ angular.module('owt.controllers', [])
     });
 
 		console.log('PlacesCtrl', $stateParams.id, 'selFilterActive', Places.sel.filterActive, items.length, initIx);
+	} 
 
-	} else {
-		//Create an object for seletion and filtering. Attach it to Places so it
-		// can be shared with details pages.
-		Places.sel= {
-			filterActive: false,
-			filterList: [],
-			filterFavs: false,
-			list: [],
-		};
-	}
+	
+	$scope.$on('$ionicView.beforeEnter', function(e) {
+		console.log('PlacesCtrl beforeEnter', $location.path() );
+		if ( $stateParams.id ) {
+			//init was already done
+		}
+		else if ( $location.path().indexOf('/places-edit') >= 0 ) {
+			saveSelListUI= Places.saveSelListUI;
+			$scope.saveSelListItems= Places.saveSelListItems;
+			console.log('/places-edit init', $scope.saveSelListItems.length);
+		}
+		else if ( ! Places.sel ) {
+			//Create an object for seletion and filtering. Attach it to Places so it
+			// can be shared with details pages.
+			Places.sel= {
+				filterActive: false,
+				filterList: [],
+				filterFavs: false,
+				list: [],
+			};
+			Places.saveSelListUI= saveSelListUI;
+			$scope.saveSelListItems= [];
+		}
+		$scope.saveSelListUI= saveSelListUI;
+	});
 
 	////////////////////////////////////////////////////////////////////////////////
 	//change the tool bar state used in the save places modal
@@ -281,16 +309,19 @@ angular.module('owt.controllers', [])
 		$scope.saveSelModalToolbarState= val;
 	}
 
-
-	var saveSelListUI= {};
-	$scope.saveSelListUI= saveSelListUI;
-	
-	$ionicModal.fromTemplateUrl('templates/modal-savePlaces.html', {
-		scope: $scope,
-		animation: 'slide-in-up',
-	}).then(function(modal) {
-		 saveSelListUI.modal= modal;
-	});
+	function placesPageSwitch(op) {
+		if ( op ) {
+			//return to the orginating page
+			console.log('placesPageSwitch return:', saveSelListUI.placesPageSwitchRet);
+			if ( saveSelListUI.placesPageSwitchRet ) 
+				$location.path(saveSelListUI.placesPageSwitchRet);
+		} else {
+			Places.saveSelListItems= $scope.saveSelListItems;
+			saveSelListUI.placesPageSwitchRet= $location.path();
+			console.log('placesPageSwitch', saveSelListUI.placesPageSwitchRet);
+			$location.path('/tab/places-edit');
+		}
+	}
 
 	$ionicModal.fromTemplateUrl('templates/modal-saveTour.html', {
 		scope: $scope,

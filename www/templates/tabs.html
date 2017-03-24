@@ -21,6 +21,11 @@
 				<ion-nav-view name="tab-places"></ion-nav-view>
 			</ion-tab>
 
+			<!-- Places EditTab -->
+			<ion-tab title="Places Edit" icon-off="ion-ios-location-outline" icon-on="ion-ios-location" href="#/tab/places-edit" hidden='true'>
+				<ion-nav-view name="tab-places-edit"></ion-nav-view>
+			</ion-tab>
+
 			<!-- Tours Tab -->
 			<ion-tab title="Tours" icon-off="ion-ios-infinite-outline" icon-on="ion-ios-infinite" href="#/tab/tours">
 				<ion-nav-view name="tab-tours"></ion-nav-view>
@@ -49,6 +54,7 @@
 				<ion-item class="sideMenuItem" menu-close href="#/tab/dash">Welcome</ion-item>
 				<ion-item class="sideMenuItem" menu-close href="#/tab/places">Places</ion-item>
 				<ion-item class="sideMenuItem" menu-close href="#/tab/tours">Tours</ion-item>
+				<ion-item class="sideMenuItem" menu-close href="#/tab/current">Take A Tour</ion-item>
 				<ion-item class="sideMenuItem" menu-close>Log In As Admin</ion-item>
 			</ion-list>
 		</ion-content>

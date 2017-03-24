@@ -1,0 +1,31 @@
+ <ion-modal-view>
+	<ion-header-bar>
+		<h1 class= "title">Save Tour</h1>
+	</ion-header-bar>
+	
+	<ion-content>
+		<div class="item text-center">
+			<button class= "button icon icon-left ion-ios-infinite min-width-160"
+				ng-click="saveSelListDialogFunc(5)">Save Tour</button>
+			<button class= "button icon icon-left ion-ios-close min-width-160"
+				ng-click="saveSelListDialogFunc(4)">Cancel</button>
+		</div>
+		<ion-list id="saveSelList" class="owt-list">
+			<ion-item>
+				<label>Tour Name:</label>
+				<input type="text" style="width:100%" 
+					ng-model="saveSelListUI.name"/>
+			</ion-item>
+			<ion-item>
+				<label>Keywords:</label>
+				<input type="text" style="width:100%" 
+					ng-model="saveSelListUI.keywords"/>
+			</ion-item>
+			<ion-item>
+				<label>Description:</label>
+				<textarea style="width:100%; min-height:200px"
+					ng-model="saveSelListUI.desc"></textarea>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+ </ion-modal-view>

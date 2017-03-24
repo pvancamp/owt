@@ -36,14 +36,13 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 	$stateProvider
 
 	// setup an abstract state for the tabs directive
-		.state('tab', {
+	.state('tab', {
 		url: '/tab',
 		abstract: true,
 		templateUrl: 'templates/tabs.html'
 	})
 
 	// Each tab has its own nav history stack:
-
 	.state('tab.current', {
 		url: '/current',
 		views: {
@@ -72,35 +71,55 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 					controller: 'PlacesCtrl',
 				}
 			}
-		})
-		.state('tab.places-detail', {
-			url: '/places/:id',
-			views: {
-				'tab-places': {
-					templateUrl: 'templates/tab-places-detail.html',
-					controller: 'PlacesCtrl'
-				}
+	})
+	.state('tab.places-detail', {
+		url: '/places/:id',
+		views: {
+			'tab-places': {
+				templateUrl: 'templates/tab-places-detail.html',
+				controller: 'PlacesCtrl',
 			}
-		})
+		}
+	})
+
+	.state('tab.places-edit', {
+		url: '/places-edit',
+		views: {
+			'tab-places-edit': {
+				templateUrl: 'templates/modal-savePlaces.html',
+				controller: 'PlacesCtrl',
+			}
+		}
+	})
+
+	.state('tab.places-edit-detail', {
+		url: '/places-edit/:id',
+		views: {
+			'tab-places-edit': {
+				templateUrl: 'templates/tab-places-detail.html',
+				controller: 'PlacesCtrl',
+			}
+		}
+	})
 
 	.state('tab.tours', {
-			url: '/tours',
-			views: {
-				'tab-tours': {
-					templateUrl: 'templates/tab-tours.html',
-					controller: 'ToursCtrl'
-				}
+		url: '/tours',
+		views: {
+			'tab-tours': {
+				templateUrl: 'templates/tab-tours.html',
+				controller: 'ToursCtrl'
 			}
-		})
-		.state('tab.tours-detail', {
-			url: '/tours/:id',
-			views: {
-				'tab-tours': {
-					templateUrl: 'templates/tab-tours-detail.html',
-					controller: 'ToursDetailCtrl'
-				}
+		}
+	})
+	.state('tab.tours-detail', {
+		url: '/tours/:id',
+		views: {
+			'tab-tours': {
+				templateUrl: 'templates/tab-tours-detail.html',
+				controller: 'ToursDetailCtrl'
 			}
-		})
+		}
+	})
 
 	.state('tab.account', {
 		url: '/account',
