@@ -74,27 +74,27 @@ angular.module('owt.controllers', [])
 
 		if ( Places.sel && Places.sel.filterActive )
 			return Places.sel.filterList;
-		
+
 		return $scope.items();
 	};
 	$scope.moveSelList= function(item, fromIndex, toIndex) {
-    //Move the item in the array
-    $scope.saveSelListItems.splice(fromIndex, 1);
-    $scope.saveSelListItems.splice(toIndex, 0, item);
-  };
-  $scope.posControlAreaClass= function(op) {
-  	if ( $scope.saveSelListUI.mapPosF ) {
-  		switch (op) {
-  			case 0: return "control-area-contained-large";
-  			case 1: return "control-area-slide";
-  			case 2: return "list-area-top-large";
-  		}
-  	}
-  	return "";
-  }
-  $scope.posControlAreaTog= function() {
-  	$scope.saveSelListUI.mapPosF= ! $scope.saveSelListUI.mapPosF;
-  };
+		//Move the item in the array
+		$scope.saveSelListItems.splice(fromIndex, 1);
+		$scope.saveSelListItems.splice(toIndex, 0, item);
+	};
+	$scope.posControlAreaClass= function(op) {
+		if ( $scope.saveSelListUI.mapPosF ) {
+			switch (op) {
+				case 0: return "control-area-contained-large";
+				case 1: return "control-area-slide";
+				case 2: return "list-area-top-large";
+			}
+		}
+		return "";
+	}
+	$scope.posControlAreaTog= function() {
+		$scope.saveSelListUI.mapPosF= ! $scope.saveSelListUI.mapPosF;
+	};
 	$scope.reorderPlacesButtonTog= function() {
 		$scope.saveSelListUI.reorderF= ! $scope.saveSelListUI.reorderF;
 		if ( $scope.saveSelListUI.reorderF )
@@ -257,37 +257,30 @@ angular.module('owt.controllers', [])
 		$scope.slider= {
 			options: {
 				initialSlide: initIx,
-      	direction: 'horizontal', //or vertical
-      	speed: 300 //0.3s transition
+				direction: 'horizontal', //or vertical
+				paginationHide: true, //do not want to see these
+				speed: 300, //0.3s transition
 			},
 			delegate: null,
 		};
 
-    $scope.$watch('slider.delegate', function(newVal, oldVal) {
-      if (newVal != null) {
-        $scope.slider.delegate.on('slideChangeEnd', function() {
-          $scope.item= items[ $scope.slider.delegate.activeIndex ];
-          //use $scope.$apply() to refresh any content external to the slider
-          $scope.$apply();
-        });
-      }
-    });
+		$scope.$watch('slider.delegate', function(newVal, oldVal) {
+			if (newVal != null) {
+				$scope.slider.delegate.on('slideChangeEnd', function() {
+					$scope.item= items[ $scope.slider.delegate.activeIndex ];
+					//use $scope.$apply() to refresh any content external to the slider
+					$scope.$apply();
+				});
+			}
+		});
 
 		console.log('PlacesCtrl', $stateParams.id, 'selFilterActive', Places.sel.filterActive, items.length, initIx);
 	} 
 
-	
+	var tabsHiddenF= false;
 	$scope.$on('$ionicView.beforeEnter', function(e) {
-		console.log('PlacesCtrl beforeEnter', $location.path() );
-		if ( $stateParams.id ) {
-			//init was already done
-		}
-		else if ( $location.path().indexOf('/places-edit') >= 0 ) {
-			saveSelListUI= Places.saveSelListUI;
-			$scope.saveSelListItems= Places.saveSelListItems;
-			console.log('/places-edit init', $scope.saveSelListItems.length);
-		}
-		else if ( ! Places.sel ) {
+		//console.log('PlacesCtrl beforeEnter', $location.path() );
+		if ( ! Places.sel ) {
 			//Create an object for seletion and filtering. Attach it to Places so it
 			// can be shared with details pages.
 			Places.sel= {
@@ -299,7 +292,22 @@ angular.module('owt.controllers', [])
 			Places.saveSelListUI= saveSelListUI;
 			$scope.saveSelListItems= [];
 		}
+		if ( $stateParams.id ) {
+			//init was already done
+		}
+		else if ( $location.path().indexOf('/places-edit') >= 0 ) {
+			tabsHiddenF= true;
+			$scope.tabsHide(true);
+			saveSelListUI= Places.saveSelListUI;
+			$scope.saveSelListItems= Places.saveSelListItems;
+			//console.log('/places-edit init', $scope.saveSelListItems.length);
+		}
 		$scope.saveSelListUI= saveSelListUI;
+	});
+
+	$scope.$on('$ionicView.beforeLeave', function(e) {
+		if ( tabsHiddenF )
+			$scope.tabsHide(false);
 	});
 
 	////////////////////////////////////////////////////////////////////////////////

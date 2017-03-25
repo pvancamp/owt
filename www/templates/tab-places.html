@@ -1,12 +1,15 @@
 <ion-view view-title="Places">
 	<div class="item owt-list-controls">
 		<div class="search-entry">
-			<input type="text" class="search-entry-input" placeholder="Selection Filter" ng-change="selListFilterChg()" ng-model="saveSelListUI.filter"></input>
-			<i class="ion ion-ios-search-strong search-entry-icon" style="left:5px"></i>
+			<i class="ion ion-ios-search-strong search-entry-icon" style="left:2%"></i>
+			<input type="text" class="search-entry-input"
+				placeholder="Selection Filter" ng-change="selListFilterChg()" ng-model="saveSelListUI.filter"></input>
+			<div class="inline-block">
 			<a ng-click="selListFilterClear()">
 				<i class="ion ion-ios-close-outline search-entry-icon" 
-				style="left:275px; font-size:22px"></i>
+				style="left:81%; font-size:22px"></i>
 			</a>
+			</div>
 			<a ng-click="filterFavs()">
 				<i class="ion search-entry-icon" ng-class="filterFavsClass()" style="right:1px"></i>
 			</a>

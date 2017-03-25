@@ -11,8 +11,7 @@
 	display: inline-table;
 	border: 0;
 	color: black;
-	margin: 0;
-	margin-bottom: 4px;
+	margin: 4px 0;
 	padding: 0;
 	cursor: pointer;
 	text-align: center;
@@ -60,6 +59,9 @@
     -webkit-transform: translate(0,-200px);
     -moz-transform: translate(0,-200px);
     transform: translate(0,-200px);
+}
+.owt-modal .control-area button {
+	min-width: 150px;
 }
 .owt-modal .control-area-contained {
 	height: 100px;
@@ -131,13 +133,14 @@
 }
 .search-entry {
 	position: relative;
-	height: 40px;
+	height: 36px;
+	margin: 0 auto;
 }
 .search-entry .search-entry-input {
 	position: absolute;
 	top: 0;
-	left: 30px;
-	width: 240px;
+	left: 10%;
+	width: 70%;
 	height: 28px;
 	line-height: 16px;
 }
@@ -265,8 +268,11 @@ input[type="text"], input[type="password"], textarea {
 .font24 { font-size: 24px; }
 .font28 { font-size: 28px; }
 .heightMax { height: 100%; }
+.inline-block { display: inline-block !important;}
+.inline-table { display: inline-table !important;}
 .margin4 { margin: 4px; }
-.min-width-160 { min-width: 160px; }
+.min-width-150 { min-width: 150px; }
+.pointer-events-auto { pointer-events: auto; }
 .position-relative { position: relative;}
 .red { color: red; }
 .text-center { text-align: center;}

@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -24,6 +24,15 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 			//always will be in portrait mode
 			screen.lockOrientation('portrait');
 		}
+
+		$rootScope.tabsHide= function(val) {
+			var el= angular.element(document).find('ion-tabs');
+			console.log('run tabsHide', el, val);
+			if (el) {
+				if (val) el.addClass('tabs-item-hide');
+				else el.removeClass('tabs-item-hide');
+			}
+		};
 	});
 })
 

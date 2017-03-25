@@ -22,14 +22,14 @@
 		<div class="item control-contained" ng-class="posControlAreaClass(0)">
 			<div class="control-area" ng-class="posControlAreaClass(1)">
 				<div class="control-area-header"></div>
-				<button class= "button icon icon-left ion-ios-heart min-width-160"
+				<button class= "button icon icon-left ion-ios-heart"
 					ng-click="saveSelListDialogFunc(1)">Add To Favs</button>
-				<button class= "button icon icon-left ion-ios-heart-outline min-width-160"
+				<button class= "button icon icon-left ion-ios-heart-outline"
 					ng-click="saveSelListDialogFunc(2)">Rm From Favs</button>
 					</br>
-				<button class= "button icon icon-left ion-ios-infinite min-width-160"
+				<button class= "button icon icon-left ion-ios-infinite"
 					ng-click="saveSelListDialogFunc(3)">Save As Tour</button>
-				<button class= "button icon icon-left ion-ios-shuffle-strong min-width-160"
+				<button class= "button icon icon-left ion-ios-shuffle-strong"
 					ng-click="saveSelListDialogFunc(0)">Revert Order</button>
 				<div class="position-relative widthMax">
 					<div class="edit-del">
@@ -54,7 +54,7 @@
 				show-reorder="saveSelListUI.reorderF"
 				>
 				<div ng-if="saveSelListItems.length">
-					<ion-item class="item-avatar item-icon-right" ng-repeat="item in saveSelListItems"
+					<ion-item class="item-avatar item-icon-right pointer-events-auto" ng-repeat="item in saveSelListItems"
 						ng-click="saveSelListClick(item)"
 						ng-href="{{saveSelListHref(item)}}">
 						<img ng-src="{{item.pic}}">						
