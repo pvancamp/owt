@@ -5,7 +5,7 @@
 	  <ion-slides options="slider.options" slider="slider.delegate">
 	  	<ion-slide-page ng-repeat="item in itemsFiltered()">
 				<ion-content class="padding">
-	  			<div>
+	  				<div>
 						<img class="float-left" ng-src="{{item.pic}}" style="width: 64px; height: 64px">
 						<a ng-click="add(item.id)">
 							<i class="icon icon-add float-right margin4 font28" ng-class="addButtonClass(item.id)">

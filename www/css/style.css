@@ -60,9 +60,13 @@
     -moz-transform: translate(0,-200px);
     transform: translate(0,-200px);
 }
+.owt-modal .control-area .shuffle {
+	min-width: 100px;
+}
 .owt-modal .control-area button {
 	min-width: 150px;
 }
+
 .owt-modal .control-area-contained {
 	height: 100px;
 	overflow: hidden;
@@ -70,15 +74,13 @@
     -moz-transition: 0.3s ease-in-out;
     transition: 0.3s ease-in-out;
 }
-.owt-modal .control-area-contained-large {
-	height: 200px;
-}
 .owt-modal .control-area-slide {
+	height: 180px;
     -webkit-transform: translate(0,0px);
     -moz-transform: translate(0,0px);
     transform: translate(0,0px);
 }
-.owt-modal .control-area-header {
+.owt-modal .control-area-map {
 	height: 180px;
 	background-color: lightblue;
 	margin-bottom: 20px;
@@ -86,7 +88,7 @@
 .owt-modal .edit-del {
 	position: absolute;
 	top: 6px;
-	left: 10px;
+	left: 4px;
 }
 .owt-modal .edit-icon {
 	font-size: 30px;
@@ -97,17 +99,13 @@
 .owt-modal .edit-reorder {
 	position: absolute;
 	top: 6px;
-	right: 10px;
+	right: 2px;
 }
 .owt-modal .list-area-top {
 	top: 200px;
     -webkit-transition: 0.3s ease-in-out;
     -moz-transition: 0.3s ease-in-out;
     transition: 0.3s ease-in-out;
-}
-.owt-modal .list-area-top-large {
-	top: 280px;
-	z-index: 2;
 }
 .owt-modal .item-right-edit {
 	left: -5px;
@@ -133,22 +131,24 @@
 }
 .search-entry {
 	position: relative;
-	height: 36px;
-	margin: 0 auto;
+	height: 38px;
+	margin: 2px auto;
 }
 .search-entry .search-entry-input {
 	position: absolute;
-	top: 0;
-	left: 10%;
-	width: 70%;
+	top: 4px;
+	left: 11%;
+	width: 68%;
 	height: 28px;
 	line-height: 16px;
+	margin: 2px;
 }
 .search-entry .search-entry-icon {
 	position: absolute;
 	top: 0;
-	font-size: 26px;
+	font-size: 28px;
 	color: black;
+	padding: 4px;
 }
 
 /******** ionic overrides **********/
@@ -172,6 +172,9 @@
 .button-block {
 	margin-top: 4px;
 	margin-bottom: 4px;
+}
+.label {
+	font-weight: bold;
 }
 .item {
 	font-size: 14px;
@@ -201,21 +204,18 @@
 	font-size: 18px;
 }
 
-.item-toggle .toggle {
+.item-toggle, .toggle-small.item-toggle {
+	font-size: 14px;
+	min-height: 40px;
+	padding: 12px 99px 12px 8px;
+	max-width: 440px
+}
+.item-toggle .toggle, .toggle-small.item-toggle .toggle {
 	top: 4px;
-}
-label {
-	line-height: 1;
-}
-label.disabled {
-	background-color: #aaa;
-	font-style: italic;
-}
-.label {
-	font-weight: bold;
 }
 .toggle .track {
 	height: 30px;
+	width: 51px;
 }
 .toggle .handle {
 	width: 28px;
@@ -245,6 +245,15 @@ h3 {
 }
 i {font-style: italic;}
 
+label {
+	display: inline-block;
+	line-height: 1;
+	font-weight: bold;
+}
+label.disabled {
+	background-color: #aaa;
+	font-style: italic;
+}
 input[type="text"], input[type="password"], textarea {
 	/*sunken look*/
 	border-radius: 2px;
@@ -268,13 +277,17 @@ input[type="text"], input[type="password"], textarea {
 .font24 { font-size: 24px; }
 .font28 { font-size: 28px; }
 .heightMax { height: 100%; }
+.inline-30 {display: inline-block !important; width:30%;}
+.inline-70 {display: inline-block !important; width:70%;}
 .inline-block { display: inline-block !important;}
 .inline-table { display: inline-table !important;}
 .margin4 { margin: 4px; }
+.margin8 { margin: 8px; }
 .min-width-150 { min-width: 150px; }
 .pointer-events-auto { pointer-events: auto; }
 .position-relative { position: relative;}
 .red { color: red; }
 .text-center { text-align: center;}
 .text-left { text-align: left;}
+.widthMax { width: 100%;}
 

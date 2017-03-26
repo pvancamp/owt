@@ -5,16 +5,27 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
+angular.module('owt', ['ionic', 'owt.services'])
 
-.run(function($ionicPlatform, $rootScope) {
+.run(function($ionicPlatform, $rootScope, $window) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
+
+		$rootScope.__isIOS= ionic.Platform.isIOS();
+		$rootScope.__width= $window.innerWidth;
+		$rootScope.__height= $window.innerHeight;
+
+		//Ionic header area header size
+		if ( $rootScope.__isIOS ) $rootScope.__headerHeight= 64;
+		else $rootScope.__headerHeight= 44;
+
+		console.log('run platform isIOS', $rootScope.__isIOS );
+		console.log('window inner size:', $window.innerWidth, $window.innerHeight );
+
 		if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 			cordova.plugins.Keyboard.disableScroll(true);
-
 		}
 		if (window.StatusBar) {
 			// org.apache.cordova.statusbar required
@@ -57,7 +68,7 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 		views: {
 			'tab-current': {
 				templateUrl: 'templates/tab-current.html',
-				controller: 'DashCtrl'
+				controller: 'ToursCtrl'
 			}
 		}
 	})
@@ -125,7 +136,7 @@ angular.module('owt', ['ionic', 'owt.controllers', 'owt.services'])
 		views: {
 			'tab-tours': {
 				templateUrl: 'templates/tab-tours-detail.html',
-				controller: 'ToursDetailCtrl'
+				controller: 'ToursCtrl'
 			}
 		}
 	})

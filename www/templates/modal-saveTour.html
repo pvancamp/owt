@@ -6,20 +6,28 @@
 	<ion-content>
 		<div class="item text-center">
 			<button class= "button icon icon-left ion-ios-wineglass min-width-150"
-				ng-click="saveSelListDialogFunc(5)">Save Tour</button>
-			<button class= "button icon icon-left ion-ios-close min-width-150"
-				ng-click="saveSelListDialogFunc(4)">Cancel</button>
+				ng-click="saveSelListDialogFunc(11)">Save Tour</button>
+			<button class= "button icon icon-left ion-ios-body min-width-150"
+				ng-click="saveSelListDialogFunc(12)">Save And Walk</button>
+				<br/>
+			<button class= "button icon icon-left ion-ios-close min-width-150 margin8"
+				ng-click="saveSelListDialogFunc(10)">Cancel</button>
 		</div>
 		<ion-list id="saveSelList" class="owt-list">
 			<ion-item>
-				<label>Tour Name:</label>
-				<input type="text" style="width:100%" 
+				<label class="inline-30">Tour Name:</label>
+				<input type="text" class="inline-70" 
 					ng-model="saveSelListUI.name"/>
 			</ion-item>
 			<ion-item>
-				<label>Keywords:</label>
-				<input type="text" style="width:100%" 
+				<label class="inline-30">Keywords:</label>
+				<input type="text" class="inline-70"
 					ng-model="saveSelListUI.keywords"/>
+			</ion-item>
+			<ion-item>
+				<label>Address:</label>
+				<input type="text" style="width:100%" 
+					ng-model="saveSelListUI.address"/>
 			</ion-item>
 			<ion-item>
 				<label>Description:</label>

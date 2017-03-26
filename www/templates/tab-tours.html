@@ -1,11 +1,11 @@
 <ion-view view-title="Tours">
 	<ion-content>
-		<ion-list>
+		<ion-list class="owt-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="item in items" type="item-text-wrap"
 				href="#/tab/tours/{{item.id}}">
 				<img ng-src="{{item.pic}}">
 				<h2>{{item.name}}</h2>
-				<p>{{item.text}}</p>
+				<p>{{item.description}}</p>
 				<a ng-click="add(item.id)">
 				<i class="icon" ng-class="addButtonClass(item.id)" style="right:40px"></i>
 				</a>

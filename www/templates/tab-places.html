@@ -1,24 +1,25 @@
 <ion-view view-title="Places">
-	<div class="item owt-list-controls">
+	<div class="item owt-list-controls" ng-style="posIonContentStyle()">
 		<div class="search-entry">
 			<i class="ion ion-ios-search-strong search-entry-icon" style="left:2%"></i>
 			<input type="text" class="search-entry-input"
 				placeholder="Selection Filter" ng-change="selListFilterChg()" ng-model="saveSelListUI.filter"></input>
 			<div class="inline-block">
 			<a ng-click="selListFilterClear()">
-				<i class="ion ion-ios-close-outline search-entry-icon" 
-				style="left:81%; font-size:22px"></i>
+				<i class="ion search-entry-icon" 
+				style="left:80%; font-size:24px" 
+				ng-class="selListFilterClass()"></i>
 			</a>
 			</div>
 			<a ng-click="filterFavs()">
 				<i class="ion search-entry-icon" ng-class="filterFavsClass()" style="right:1px"></i>
 			</a>
 		</div>
-		<button class="button" ng-click="saveSelList(1)">Save Selected</button>
-		<button class="button" ng-click="saveSelList(0)">Clear Selected</button>
+		<button class="button" ng-click="saveSelListBut(1)">Save Selected</button>
+		<button class="button" ng-click="saveSelListBut(0)">Clear Selected</button>
 	</div>
 	<div class="position-relative heightMax">
-		<ion-content class="owt-content">
+		<ion-content class="owt-content" ng-style="posIonContentStyle()">
 			<ion-list class="owt-list">
 				<div ng-if="items()">
 					<ion-item class="item-avatar item-icon-right" ng-repeat="item in itemsFiltered()"

@@ -28,8 +28,19 @@
 		<!-- your app's js -->
 		<script src="data/orlando-walking-tours.js"></script>
 		<script src="js/app.js"></script>
-		<script src="js/controllers.js"></script>
+		<script src="js/gmap.js"></script>
+		<script src="js/miscCtrls.js"></script>
+		<script src="js/placesCtrl.js"></script>
 		<script src="js/services.js"></script>
+		<script>
+		  var GoogleMapsIsReady= false;
+		  function initGMap() { 
+			GoogleMapsIsReady= true;
+			console.log('GoogleMapsIsReady');
+		  }
+		</script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdH_2WjwS6OMa9Obt7chZDGS1FCiLLRPc&callback=initGMap"
+		async defer></script>
 	</head>
 	<body ng-app="owt">
 		<!--

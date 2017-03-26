@@ -1,8 +1,16 @@
 <ion-view view-title="Take A Tour">
   <ion-content class="padding">
     <h2>Orlando Walking Tours</h2>
-    <p>No tour is currently active. To activate a tour,
-    	switch to the <a href="#/tab/tours">tours tab</a>, tap on one of the tours to get to its <i>Details</i> page, and tap on the <b>Take A Tour</b> button.
-    </p>
+    <div ng-if="!current()">
+    	<h3>* No Current Tour *</h3>
+	    <p>No tour is currently active. To activate a tour,
+	    	switch to the <a href="#/tab/tours">tours tab</a>, tap on one of the tours to get to its <i>Details</i> page, and tap on the <b>Take A Tour</b> button.
+	    </p>
+	</div>
+	<div ng-if="current()">
+		<h3>{{currentName()}}</h3>
+		<p>You are going to location 1 for this walkning tour. Swipe left to get to the tour description page.
+		</p>
+	</div>
   </ion-content>
 </ion-view>
