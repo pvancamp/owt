@@ -3,7 +3,7 @@
 angular.module('owt')
 
 .controller('PlacesCtrl', function(App, Places, Tours, GmapUtils, $scope, $state,
-	$ionicModal, $ionicPopup, $ionicScrollDelegate, $location, $stateParams ) {
+	$ionicModal, $ionicPopup, $ionicScrollDelegate, $location, $stateParams, $timeout ) {
 
 	//add to selected list
 	$scope.add= function(id) {
@@ -41,6 +41,7 @@ angular.module('owt')
 		var ix= $scope.saveSelListItems.findIndex( (itm) => {
 			return itm.id == id;
 		});
+		Places.gmap.clearOneMarker(id);
 		$scope.saveSelListItems.splice(ix, 1);
 	};
 
@@ -50,17 +51,30 @@ angular.module('owt')
 			saveSelListUI.reorderF= false;
 	};
 
+	var filterFavsBlockF;
 	$scope.filterFavs= function() {
+		if ( filterFavsBlockF ) return;
 		Places.sel.filterFavs= !Places.sel.filterFavs;
 		$scope.selListFilterChg();
+		filterFavsBlockF= true;
+
+		//debounce this click
+		$timeout(function(){ filterFavsBlockF= false;},
+			1000);
 	};
 	$scope.filterFavsClass= function() {
 		if ( Places.sel.filterFavs ) return "ion-ios-heart";
 		else return "ion-ios-heart-outline";
 	};
+	$scope.itemDetailsPage= function(itm) {
+		App.loadingShow();
+		$timeout(function() {$state.go('tab.places-detail', {id: itm.id}) });
+	};
+
 	$scope.items= function() {
 		return Places.all();
 	};
+
 	$scope.itemsFiltered= function() {
 		if ( $location.path().indexOf('/places-edit') >= 0 )
 			return Places.saveSelListItems;
@@ -185,10 +199,19 @@ angular.module('owt')
 			}
 			if ( chgF ) {
 				//recreate the orginal list
+				Places.gmap.init();
 				$scope.saveSelListItems= [];
 				Places.sel.list.forEach( (id) => {
 					var itm= Places.get(id);
-					if (itm) $scope.saveSelListItems.push(itm);
+					if (itm) {
+						$scope.saveSelListItems.push(itm);
+						var loc= {
+							name: itm.name,
+							lat: itm.location.latitude,
+							lng: itm.location.longitude,
+						};
+						Places.gmap.addMarker( itm.id, loc );
+					}
 				});
 			} else {
 				//reverse the list order

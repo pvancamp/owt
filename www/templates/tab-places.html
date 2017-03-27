@@ -11,25 +11,31 @@
 				ng-class="selListFilterClass()"></i>
 			</a>
 			</div>
-			<a ng-click="filterFavs()">
-				<i class="ion search-entry-icon" ng-class="filterFavsClass()" style="right:1px"></i>
-			</a>
 		</div>
-		<button class="button" ng-click="saveSelListBut(1)">Save Selected</button>
-		<button class="button" ng-click="saveSelListBut(0)">Clear Selected</button>
+		<div class="widthMax text-center">
+			<button class="button" ng-click="saveSelListBut(1)">Save Selected</button>
+			<button class="button" ng-click="saveSelListBut(0)">Clear Selected</button>
+			<button class="button select-icon" ng-click="filterFavs()">
+				<i class="ion" ng-class="filterFavsClass()"></i>
+			</button>
+		</div>
 	</div>
 	<div class="position-relative heightMax">
 		<ion-content class="owt-content" ng-style="posIonContentStyle()">
 			<ion-list class="owt-list">
 				<div ng-if="items()">
-					<ion-item class="item-avatar item-icon-right" ng-repeat="item in itemsFiltered()"
-						href="#/tab/places/{{item.id}}">
+					<ion-item class="item-avatar item-icon-right"
+						ng-repeat="item in itemsFiltered() track by item.id"
+						>
 						<img class="owt-list-img" ng-src="{{item.pic}}">
+						<a ng-click="itemDetailsPage(item)">
 						<h2>{{item.name}}</h2>
 						<p>{{item.description}}</p>
+						</a>
 						<a ng-click="add(item.id)">
-						<i class="icon icon-add" ng-class="addButtonClass(item.id)">
-							{{addButtonPos(item.id)}}</i>
+							<i class="icon icon-add"
+								ng-class="addButtonClass(item.id)">
+								{{addButtonPos(item.id)}}</i>
 						</a>
 						<!--
 						<i class="icon ion-chevron-right icon-accessory"></i>

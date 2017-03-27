@@ -103,7 +103,7 @@ angular.module('owt.services', [])
 					}
 					itemsAsList.push( vals );
 				});
-				itemsAsList.sort( (a,b) => { return(a.name - b.name) } );
+				itemsAsList.sort( (a,b) => { return(a.name.localeCompare(b.name)) } );
 				console.log('Places all', itemsAsList);
 			}
 			return itemsAsList;

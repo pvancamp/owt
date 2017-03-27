@@ -50,6 +50,17 @@
 	text-align: center;
 	top: 44px;
 }
+.owt-list-controls .select-icon {
+	font-size: 30px;
+	box-shadow: 0 0 0 !important;
+	background-color: transparent !important;
+	padding: 0 4px;
+	border-color: transparent !important;
+}
+.owt-list-controls .select-icon:active {
+	box-shadow: 0 0 0;
+	background-color: transparent;
+}
 .owt-modal .control-area {
 	height: 100px;
 	text-align: center;
