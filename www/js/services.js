@@ -1,6 +1,6 @@
 // by Paul Van Camp
 
-angular.module('owt.services', [])
+angular.module('owt')
 .factory('owtFirebase', function() {
 	// Initialize Firebase
 	var config = {
@@ -104,7 +104,7 @@ angular.module('owt.services', [])
 					itemsAsList.push( vals );
 				});
 				itemsAsList.sort( (a,b) => { return(a.name.localeCompare(b.name)) } );
-				console.log('Places all', itemsAsList);
+				console.log('Places all', itemsAsList.length);
 			}
 			return itemsAsList;
 		},
@@ -137,6 +137,7 @@ angular.module('owt.services', [])
 .factory('Tours', function() {
 	var itemsAsObj, itemsAsList, itemsLoaded;
 	var itemCurrent;
+	var nextIx= 1;
 
 	function items() {
 		if ( ! itemsLoaded ) {
@@ -173,18 +174,15 @@ angular.module('owt.services', [])
 	var srv= {
 		add: function(tour) {
 			var tours= items();
-			var ix;
 			if ( tours ) {
-				ix= tours['#'] || 1;
-				ix++;
-				tours['#']= ix;
-				tour.id= ix;
-				tours[ix]= tour;
+				while( tours[nextIx] ) nextIx++;
+				tour.id= nextIx;
+				tours[nextIx]= tour;
 
 				itemsList().push(tour);
-				console.log('Added Tour', ix);
+				console.log('Added Tour', nextIx);
 			}
-			return ix;
+			return nextIx;
 		},
 		all: function() {
 			return itemsList();

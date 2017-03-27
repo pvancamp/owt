@@ -5,12 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('owt', ['ionic', 'owt.services'])
+angular.module('owt', ['ionic'])
 
 .run(function($ionicPlatform, $rootScope, $window) {
 	$ionicPlatform.ready(function() {
-		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-		// for form inputs)
 
 		$rootScope.__isIOS= ionic.Platform.isIOS();
 		$rootScope.__width= $window.innerWidth;
@@ -23,6 +21,8 @@ angular.module('owt', ['ionic', 'owt.services'])
 		console.log('run platform isIOS', $rootScope.__isIOS );
 		console.log('window inner size:', $window.innerWidth, $window.innerHeight );
 
+		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+		// for form inputs)
 		if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 			cordova.plugins.Keyboard.disableScroll(true);
@@ -38,7 +38,7 @@ angular.module('owt', ['ionic', 'owt.services'])
 
 		$rootScope.tabsHide= function(val) {
 			var el= angular.element(document).find('ion-tabs');
-			console.log('run tabsHide', el, val);
+			//console.log('run tabsHide', el, val);
 			if (el) {
 				if (val) el.addClass('tabs-item-hide');
 				else el.removeClass('tabs-item-hide');
@@ -68,7 +68,7 @@ angular.module('owt', ['ionic', 'owt.services'])
 		views: {
 			'tab-current': {
 				templateUrl: 'templates/tab-current.html',
-				controller: 'ToursCtrl'
+				controller: 'ToursCtrl',
 			}
 		}
 	})
@@ -84,20 +84,20 @@ angular.module('owt', ['ionic', 'owt.services'])
 	})
 
 	.state('tab.places', {
-			url: '/places',
-			views: {
-				'tab-places': {
-					templateUrl: 'templates/tab-places.html',
-					controller: 'PlacesCtrl',
-				}
+		url: '/places',
+		views: {
+			'tab-places': {
+				templateUrl: 'templates/tab-places.html',
+				controller: 'PlacesCtrl',
 			}
+		}
 	})
 	.state('tab.places-detail', {
 		url: '/places/:id',
 		views: {
 			'tab-places': {
 				templateUrl: 'templates/tab-places-detail.html',
-				controller: 'PlacesCtrl',
+				controller: 'PlacesDetailsCtrl',
 			}
 		}
 	})
@@ -107,7 +107,7 @@ angular.module('owt', ['ionic', 'owt.services'])
 		views: {
 			'tab-places-edit': {
 				templateUrl: 'templates/modal-savePlaces.html',
-				controller: 'PlacesCtrl',
+				controller: 'PlacesManCtrl',
 			}
 		}
 	})
@@ -117,7 +117,7 @@ angular.module('owt', ['ionic', 'owt.services'])
 		views: {
 			'tab-places-edit': {
 				templateUrl: 'templates/tab-places-detail.html',
-				controller: 'PlacesCtrl',
+				controller: 'PlacesDetailsCtrl',
 			}
 		}
 	})

@@ -30,7 +30,7 @@
 						<img class="owt-list-img" ng-src="{{item.pic}}">
 						<a ng-click="itemDetailsPage(item)">
 						<h2>{{item.name}}</h2>
-						<p>{{item.description}}</p>
+						<p>{{item.description || ' '}}</p>
 						</a>
 						<a ng-click="add(item.id)">
 							<i class="icon icon-add"

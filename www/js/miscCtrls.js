@@ -3,16 +3,27 @@
 angular.module('owt')
 
 .controller('AccountCtrl', function($scope) {
+	$scope.$on('$ionicView.enter', function(e) {
+		$scope.tabsHide(false);
+	});
+
 	$scope.settings = {
 		largePrint: false,
 		lang: 'A',
 	};
 })
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope) {
+	$scope.$on('$ionicView.enter', function(e) {
+		$scope.tabsHide(false);
+	});
 
-.controller('ToursCtrl', function(Tours, $scope, $stateParams) {
-	//$scope.$on('$ionicView.enter', function(e) {
-	//});
+})
+.controller('ToursCtrl', function(App, Tours, $scope, $stateParams) {
+	$scope.$on('$ionicView.enter', function(e) {
+		App.loadingHide();
+		$scope.tabsHide(false);
+		console.log('ToursCtrl', Tours.all() );
+	});
 
 	if ( $stateParams.id ) {
 		$scope.item = Tours.get($stateParams.id);
