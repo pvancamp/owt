@@ -1,15 +1,15 @@
-<ion-view view-title="Walking Tour">
+<ion-view view-title="Guided Tour">
   <ion-content class="padding" on-swipe-left="currentDetails()">
     <h2>Orlando Walking Tours</h2>
     <div ng-if="!current()">
     	<h3>* No Current Tour *</h3>
 	    <p>No tour is currently active. To activate a tour,
-	    	switch to the <a href="#/tab/tours">tours tab</a>, tap on one of the tours to get to its <i>Details</i> page, and tap on the <b>Walking Tour</b> button.
+	    	switch to the <a href="#/tab/tours">tours tab</a>, tap on one of the tours to get to its <i>Details</i> page, and tap on the <b>Guided Tour</b> button.
 	    </p>
 	</div>
 	<div ng-if="current()">
 		<h3>{{currentName()}}</h3>
-		<p>You are going to location 1 for this walkning tour. Swipe left to get to the tour description page.
+		<p>You are going to location 1 for this walking tour. Swipe left to get to the tour description page.
 		</p>
 	</div>
   </ion-content>

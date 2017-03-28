@@ -10,7 +10,7 @@
 	bottom: 150px
 }
 .owt-details {
-	top: 0;
+	top: 0 !important;
 }
 .owt-details .select-icon {
 	float: right;
@@ -23,14 +23,14 @@
 	position: absolute;
 	height: 200px;
 	width: 100%;
-	-webkit-transition: 0.3s ease-in-out;
-	-moz-transition: 0.3s ease-in-out;
-	transition: 0.3s ease-in-out;
+	-webkit-transition: 0.5s ease-in-out;
+	-moz-transition: 0.5s ease-in-out;
+	transition: 0.5s ease-in-out;
 }
 .owt-details-slide {
-	-webkit-transition: 0.3s ease-in-out;
-	-moz-transition: 0.3s ease-in-out;
-	transition: 0.3s ease-in-out;
+	-webkit-transition: 0.5s ease-in-out;
+	-moz-transition: 0.5s ease-in-out;
+	transition: 0.5s ease-in-out;
 }
 .owt-list .item h2 { font-size: 14px; text-align: left; }
 .owt-list .item p { font-size: 11px;}

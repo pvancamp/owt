@@ -10,12 +10,11 @@ angular.module('owt')
 
 	$scope.$on('$ionicView.enter', function(e) {
 		App.loadingHide();
-		saveSelListUI.managerF= false;
+		saveSelListUI.managerF= true;
 		saveSelListUI.reorderActiveF= false;
 		if ( Places.gmap.placesMan ) Places.gmap.placesMan.init();
-
-		
 		if ( $scope.tabsHide ) $scope.tabsHide(true);
+
 		if ( saveSelListUI.initPlacesManF ) {
 			saveSelListUI.initPlacesManF= false;
 			modalToolbarSetState(1);
@@ -82,7 +81,7 @@ angular.module('owt')
 
 	//Places list-item was clicked
 	$scope.saveSelListClick= function(itm, op) {
-		console.log('saveSelListClick', itm.id);
+		console.log('saveSelListClick', itm.id, 'mapMode:', saveSelListUI.mapMode);
 		saveSelListUI.lastClick= itm.id;
 		if ( op || saveSelListUI.mapMode < 2 )
 			$state.go('tab.places-edit-detail', {id: itm.id});
@@ -263,7 +262,7 @@ angular.module('owt')
 	//change the tool bar state used in the save places modal
 	function modalToolbarSetState(val) {
 		saveSelListUI.toolbarIx= val;
-		if ( val == 1 && saveSelListUI ) {
+		if ( val == 1  ) {
 			saveSelListUI.delF= false;
 			saveSelListUI.mapMode= false;
 		}

@@ -16,6 +16,17 @@ angular.module('owt')
 		if ( $scope.tabsHide ) $scope.tabsHide(false);
 	});
 
+	//Move the ion-content element downward
+	$scope.posIonContentStyle= function(place, heightF) {
+		var h;
+		if ( place == 2 ) h= (mapMode ? 200 : 0);
+		else if ( place == 1 ) h= (mapMode ? 44 : -200)+$scope.__headerHeight;
+		else h= $scope.__headerHeight; //iPhone pads header with extra area
+
+		if ( heightF ) return {height: h+'px'};
+		return {top: h+'px'};
+	};
+
 })
 
 .controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $ionicPopup, $scope, $stateParams, $timeout) {
@@ -57,8 +68,8 @@ angular.module('owt')
 	//Move the ion-content element downward
 	$scope.posIonContentStyle= function(place, heightF) {
 		var h;
-		if ( place == 2 ) h= mapMode ? 200 : 0;
-		else if ( place == 1 ) h= (mapMode ? 40 : -200)+$scope.__headerHeight;
+		if ( place == 2 ) h= (mapMode ? 200 : 0);
+		else if ( place == 1 ) h= (mapMode ? 44 : -200)+$scope.__headerHeight;
 		else h= $scope.__headerHeight; //iPhone pads header with extra area
 
 		if ( heightF ) return {height: h+'px'};
@@ -79,10 +90,14 @@ angular.module('owt')
 			});
 			break;
 		case 2:
-			mapMode= false;
+			//camera
+			$ionicPopup.alert({
+				title: 'Take A Photo',
+				template: 'Someday you will be able to attach your own photo!',
+			});
 			break;
 		case 3:
-			mapMode= true;
+			mapMode= !mapMode;
 			gmapItem( $scope.item, true );
 			break;
 		case 4:
@@ -99,10 +114,9 @@ angular.module('owt')
 				if ( ! $scope.item.fav ) ii += '-outline'; //tool not enabled
 				break;
 			case 1: ii= 'ion-ios-cloud-upload-outline'; break;
-			case 2: ii= 'ion-ios-world';
-				if (mapMode) ii += '-outline'; //tool not enabled
+			case 2: ii= 'ion-ios-camera-outline';
 				break;
-			case 3: ii= 'ion-ios-location';
+			case 3: ii= 'ion-ios-world';
 				if (!mapMode) ii += '-outline'; //tool not enabled
 				break;
 			case 4: ii= 'ion-ios-navigate';
