@@ -24,6 +24,7 @@ angular.module('owt')
 		else if ( Places.sel && Places.sel.detailsItem ) {
 			$scope.item= Places.sel.detailsItem;
 			initIx= items.findIndex( (itm) => {return itm.id == $scope.item.id} );
+			$ionicSlideBoxDelegate.update();
 			$ionicSlideBoxDelegate.slide(initIx);
 			console.log('PlacesDetailsCtrl redirect', initIx, Places.sel.detailsItem.id, Places.sel.detailsRet);
 		}

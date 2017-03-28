@@ -1,7 +1,7 @@
 <ion-view view-title="{{item.name}}">
 	<div class="position-relative">
 	</div>
-	<ion-slides options="slider.options" slider="slider.delegate">
+	<ion-slides options="slider.options" slider="slider.delegate" delegate-handle="places">
 	  	<ion-slide-page ng-repeat="item in itemsFiltered() track by item.id">
 			<ion-content class="padding owt-details">
 	  			<div>
