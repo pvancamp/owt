@@ -14,7 +14,7 @@ angular.module('owt')
 
 })
 
-.controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $location, $ionicSlideBoxDelegate, $scope, $stateParams) {
+.controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $location, $ionicSlideBoxDelegate, $scope, $stateParams, $timeout) {
 	angular.extend( $scope, PlacesCtrlSrv);
 	$scope.pageType= 'placesDetails';
 
@@ -24,8 +24,10 @@ angular.module('owt')
 		else if ( Places.sel && Places.sel.detailsItem ) {
 			$scope.item= Places.sel.detailsItem;
 			initIx= items.findIndex( (itm) => {return itm.id == $scope.item.id} );
-			$ionicSlideBoxDelegate.update();
-			$ionicSlideBoxDelegate.slide(initIx);
+			$timeout( () => {
+				$ionicSlideBoxDelegate.update();
+				$ionicSlideBoxDelegate.slide(initIx);
+			});
 			console.log('PlacesDetailsCtrl redirect', initIx, Places.sel.detailsItem.id, Places.sel.detailsRet);
 		}
 	});
