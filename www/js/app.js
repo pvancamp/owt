@@ -56,10 +56,16 @@ angular.module('owt', ['ionic'])
 	$stateProvider
 
 	// setup an abstract state for the tabs directive
+	.state('places-detail', {
+		url: '/places-detail',
+		templateUrl: 'templates/places-detail.html',
+		controller: 'PlacesDetailsCtrl',
+	})
+
 	.state('tab', {
 		url: '/tab',
 		abstract: true,
-		templateUrl: 'templates/tabs.html'
+		templateUrl: 'templates/tabs.html',
 	})
 
 	// Each tab has its own nav history stack:

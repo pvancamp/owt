@@ -21,6 +21,10 @@
 .but-toolbar i {
 	font-size: 18px;
 }
+#owt-back-button {
+	float: left;
+	font-size: 30px;
+}
 .owt-content {
 	bottom: 150px
 }
