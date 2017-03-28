@@ -11,6 +11,8 @@ angular.module('owt')
 	$scope.$on('$ionicView.enter', function(e) {
 		App.loadingHide();
 		saveSelListUI.managerF= false;
+		saveSelListUI.reorderActiveF= false;
+		
 		$scope.tabsHide(true);
 		if ( saveSelListUI.initPlacesManF ) {
 			saveSelListUI.initPlacesManF= false;
@@ -18,12 +20,21 @@ angular.module('owt')
 		}
 	});
 
+
 	//Used to drag and drop list order
 	$scope.moveSelList= function(item, fromIndex, toIndex) {
 		//Move the item in the array
 		$scope.saveSelListItems.splice(fromIndex, 1);
 		$scope.saveSelListItems.splice(toIndex, 0, item);
 	};
+
+	$scope.onReorderButtonTouch= function() {
+		saveSelListUI.reorderActiveF= true;
+	}
+
+	$scope.onReorderButtonRelease= function() {
+		saveSelListUI.reorderActiveF= false;
+	}
 
 	//Move the ion-content element downward (placesMan )
 	$scope.posIonContentStyle= function(place, heightF) {
@@ -40,7 +51,9 @@ angular.module('owt')
 	$scope.posListTopStyle= function() {
 		var h= 156;
 		if ( saveSelListUI.mapMode ) h= 236;
-		return { top : (h + $scope.__headerHeight) + 'px'};
+		var ret= { top : (h + $scope.__headerHeight) + 'px'};
+		if ( saveSelListUI.reorderActiveF ) ret['pointer-events']= 'none';
+		return ret;
 	};
 
 	//Places list-item was clicked
