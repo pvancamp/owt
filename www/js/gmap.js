@@ -88,7 +88,7 @@ angular.module('owt')
 				}
 				else marker= mlist[0].m;
 
-				this.map.setZoom(12);
+				this.map.setZoom(15);
 				this.map.setCenter( marker.getPosition() );
 			} else {
 				if ( ! this.bounds )
@@ -123,6 +123,13 @@ angular.module('owt')
 			return new google.maps.Marker( markerInfo );
 		};
 
+		this.moveToLocation= function(loc) {
+			if ( ! loc.lat || ! loc.lng ) return;
+			var myLatLng = new google.maps.LatLng(loc.lat, loc.lng);
+
+			this.map.setCenter( myLatLng );
+		};
+
 		this.oneMarkerVisible= function(which) {
 			if ( this.markers ) {
 				angular.forEach( this.markers, (mkr, key) => {
@@ -130,6 +137,7 @@ angular.module('owt')
 				});
 			}
 		};
+
 	}
 
 	return {
@@ -160,7 +168,7 @@ angular.module('owt')
 				};
 				var el= element.children()[0];
 				var map = new google.maps.Map(el, initOptions );
-				scope.data.init(map, 'gmap'+scope.$id);
+				scope.data.init(map, scope.data.index || 'gmap'+scope.$id);
 			};
 
 		},

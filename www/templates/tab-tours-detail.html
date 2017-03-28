@@ -2,6 +2,7 @@
 	This template loads for the 'tab.item-detail' state (app.js)
 -->
 <ion-view view-title="{{item.name}}">
+	<div ng-style="posIonContentStyle(0, true)"></div>
 	<ion-slides options="slider.options" slider="slider.delegate">
 		<ion-slide-page ng-repeat="item in itemsFiltered() track by item.id">
 			<ion-content class="padding owt-details">

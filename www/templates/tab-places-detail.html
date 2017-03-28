@@ -2,7 +2,24 @@
 	This template loads for the 'tab.item-detail' state (app.js)
 -->
 <ion-view view-title="{{item.name}}">
-	  <ion-slides options="slider.options" slider="slider.delegate">
+	<div ng-style="posIonContentStyle(0, true)"></div>
+	<div class="owt-toolbar">
+		<a ng-click="toolBarBut(1)"><div class="but-toolbar" style="width:20%">
+			<i class="icon" ng-class="toolBarButClass(1)"></i><div>Share</div>
+		</div></a><a ng-click="toolBarBut(2)"><div class="but-toolbar" style="width:20%">
+			<i class="icon" ng-class="toolBarButClass(2)"></i><div>Map Off</div>
+		</div></a><a ng-click="toolBarBut(3)"><div class="but-toolbar" style="width:20%">
+			<i class="icon" ng-class="toolBarButClass(3)"></i><div>Map On</div>
+		</div></a><a ng-click="toolBarBut(4)"><div class="but-toolbar" style="width:20%">
+			<i class="icon" ng-class="toolBarButClass(4)"></i><div>Map Me</div>
+		</div></a><a ng-click="toolBarBut(0)"><div class="but-toolbar" style="width:20%">
+			<i class="icon" ng-class="toolBarButClass(0)"></i><div>My Fav</div>
+		</div></a>
+	</div>
+	<div class="owt-details-map owt-details-slide" ng-style="posIonContentStyle(1)" gmap="gmapData">
+	</div>
+	<div class="owt-details-slide" ng-style="posIonContentStyle(2, true)"></div>
+	<ion-slides options="slider.options" slider="slider.delegate">
 	  	<ion-slide-page ng-repeat="item in itemsFiltered() track by item.id">
 			<ion-content class="padding owt-details">
 	  			<div>

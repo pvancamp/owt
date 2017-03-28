@@ -12,6 +12,8 @@ angular.module('owt')
 		App.loadingHide();
 		saveSelListUI.managerF= false;
 		saveSelListUI.reorderActiveF= false;
+		if ( Places.gmap.placesMan ) Places.gmap.placesMan.init();
+
 		
 		if ( $scope.tabsHide ) $scope.tabsHide(true);
 		if ( saveSelListUI.initPlacesManF ) {
@@ -20,6 +22,30 @@ angular.module('owt')
 		}
 	});
 
+	$scope.gmapData= { init: $scope.gmapInit, index: 'placesMan' };
+
+	//Icon to show delete-from-list mode
+	$scope.delPlacesButtonClass= function() {
+		if ( saveSelListUI.delF )
+			return "ion-ios-minus red";
+		return "ion-ios-minus-outline black";
+	};
+
+	//Delete from selection list button press
+	$scope.delPlacesButtonOp= function(id) {
+		var ix= $scope.saveSelListItems.findIndex( (itm) => {
+			return itm.id == id;
+		});
+		Places.gmap.placesMan.clearOneMarker(id);
+		$scope.saveSelListItems.splice(ix, 1);
+	};
+
+	//Button press to toggle delete-from-selection mode
+	$scope.delPlacesButtonTog= function() {
+		saveSelListUI.delF= ! saveSelListUI.delF;
+		if ( saveSelListUI.delF )
+			saveSelListUI.reorderF= false;
+	};
 
 	//Used to drag and drop list order
 	$scope.moveSelList= function(item, fromIndex, toIndex) {
@@ -36,12 +62,10 @@ angular.module('owt')
 		saveSelListUI.reorderActiveF= false;
 	}
 
-	//Move the ion-content element downward (placesMan )
+	//Move the ion-content element downward
 	$scope.posIonContentStyle= function(place, heightF) {
 		var h;
-		if ( place ) {
-			h= 0;
-		}
+		if ( place ) h= 0;
 		else h= $scope.__headerHeight; //iPhone pads header with extra area
 
 		if ( heightF ) return {height: h+'px'};
@@ -82,7 +106,7 @@ angular.module('owt')
 			}
 			if ( chgF ) {
 				//recreate the orginal list
-				Places.gmap.init();
+				Places.gmap.placesMan.init();
 				$scope.saveSelListItems.splice(0, $scope.saveSelListItems.length);
 				Places.sel.list.forEach( (id) => {
 					var itm= Places.get(id);
@@ -93,7 +117,7 @@ angular.module('owt')
 							lat: itm.location.latitude,
 							lng: itm.location.longitude,
 						};
-						Places.gmap.addMarker( itm.id, loc );
+						Places.gmap.placesMan.addMarker( itm.id, loc );
 					}
 				});
 			} else {
@@ -211,25 +235,26 @@ angular.module('owt')
 		saveSelListUI.mapMode= val;
 		if ( val > 0 ) {
 			//map is to be shown
+			var gmap= Places.gmap.placesMan;
 			var tourplaces= $scope.saveSelListItems;
 			if ( tourplaces.length ) {
-				if ( ! Places.gmap.markers ) {
+				if ( ! gmap.markers ) {
 					tourplaces.forEach( (vals) => {
 						var loc= {
 							name: vals.name,
 							lat: vals.location.latitude,
 							lng: vals.location.longitude,
 						};
-						Places.gmap.addMarker( vals.id, loc );
+						gmap.addMarker( vals.id, loc );
 					});
-					Places.gmap.fitToMarkers();
+					gmap.fitToMarkers();
 				}
-				else if (val == 1 ) Places.gmap.fitToMarkers();
+				else if (val == 1 ) gmap.fitToMarkers();
 				if ( val == 1 ) {
-					Places.gmap.allMarkersVisible(true);
+					gmap.allMarkersVisible(true);
 				} 
 				else if ( val == 2 ) {
-					Places.gmap.oneMarkerVisible( saveSelListUI.lastClick );
+					gmap.oneMarkerVisible( saveSelListUI.lastClick );
 				}
 			}
 		}

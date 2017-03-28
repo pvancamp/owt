@@ -56,6 +56,16 @@ angular.module('owt')
 		return items;
 	}
 
+	//Move the ion-content element downward
+	$scope.posIonContentStyle= function(place, heightF) {
+		var h;
+		if ( place ) h= 0;
+		else h= $scope.__headerHeight; //iPhone pads header with extra area
+
+		if ( heightF ) return {height: h+'px'};
+		return {top: h+'px'};
+	};
+
 	$scope.slider= {
 		options: {
 			initialSlide: initIx,

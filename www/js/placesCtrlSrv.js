@@ -21,12 +21,11 @@ angular.module('owt')
 	};
 
 	//Icon to show in selection position
-	$scope.addButtonClass= function(id, deleteF) {
-		if ( deleteF ) return "ion-ios-close-outline red";
+	$scope.addButtonClass= function(id, mode) {
 		var itm= Places.get(id);
 		if ( itm ) {
 			if ( itm.sel ) return "black";
-			else if ( itm.fav ) return "ion-ios-heart black";
+			else if ( mode && itm.fav ) return "ion-ios-heart black";
 		}
 		return "ion-ios-checkmark-outline black";
 	};
@@ -37,29 +36,6 @@ angular.module('owt')
 		var itm= Places.get(id);
 		if ( itm && itm.sel ) return Places.sel.list.indexOf(itm.id)+1;
 		return '';
-	};
-
-	//Icon to show delete-from-list mode
-	$scope.delPlacesButtonClass= function() {
-		if ( saveSelListUI.delF )
-			return "ion-ios-minus red";
-		return "ion-ios-minus-outline black";
-	};
-
-	//Delete from selection list button press
-	$scope.delPlacesButtonOp= function(id) {
-		var ix= $scope.saveSelListItems.findIndex( (itm) => {
-			return itm.id == id;
-		});
-		Places.gmap.clearOneMarker(id);
-		$scope.saveSelListItems.splice(ix, 1);
-	};
-
-	//Button press to toggle delete-from-selection mode
-	$scope.delPlacesButtonTog= function() {
-		saveSelListUI.delF= ! saveSelListUI.delF;
-		if ( saveSelListUI.delF )
-			saveSelListUI.reorderF= false;
 	};
 
 	//Favs filer mode button
@@ -80,6 +56,24 @@ angular.module('owt')
 		if ( Places.sel.filterFavs ) return "ion-ios-heart";
 		else return "ion-ios-heart-outline";
 	};
+
+	//callback given to gmap directive is invoked when map is ready
+	$scope.gmapInit= function(gg, index) {
+		gg.setOptions({
+			clickableIcons: true,
+			disableDoubleClickZoom: false,
+			fullscreenControl: true,
+			streetViewControl: true,
+		});
+		if ( ! Places.gmap ) Places.gmap= {};
+
+		var gmap= new GmapUtils.mapMan( gg );
+		if ( index ) Places.gmap[index]= gmap;
+		if ( $scope.gmapInitCbk ) {
+			$scope.gmapInitCbk( gmap );
+		}
+		console.log('gmapInit index:', index);
+	}
 
 	//Change to the details page
 	$scope.itemDetailsPage= function(itm) {
@@ -124,9 +118,6 @@ angular.module('owt')
 	$scope.saveSelListBut= function(op) {
 		if ( op ) {
 			//Collect a list of places and switch to the manager
-			console.log('saveSelListBut', Places.gmap);
-			if ( Places.gmap ) Places.gmap.init();
-
 			$scope.saveSelListItems.splice(0, $scope.saveSelListItems.length);
 			Places.sel.list.forEach( (id) => {
 				var itm= Places.get(id);
@@ -188,7 +179,6 @@ angular.module('owt')
 
 	var saveSelListUI= {toolbarIx: 1};
 	$scope.saveSelListUI= saveSelListUI;
-	$scope.gmapData= { init: gmapInit };
 	$scope.saveSelListItems= [];
 
 	Places.saveSelListUI= saveSelListUI;
@@ -198,19 +188,6 @@ angular.module('owt')
 		filterFavs: false,
 		list: [],
 	};
-
-	//callback given to gmap directive is invoked when map is ready
-	function gmapInit(gg, el) {
-		gg.setOptions({
-			clickableIcons: true,
-			disableDoubleClickZoom: false,
-			fullscreenControl: true,
-			streetViewControl: true,
-		});
-		
-		Places.gmap= new GmapUtils.mapMan( gg );
-		console.log('gmapInit');
-	}
 
 	return $scope;
 })
