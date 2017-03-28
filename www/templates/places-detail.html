@@ -1,0 +1,27 @@
+<ion-view view-title="{{item.name}}">
+	<div class="position-relative">
+	</div>
+	<ion-slides options="slider.options" slider="slider.delegate">
+	  	<ion-slide-page ng-repeat="item in itemsFiltered() track by item.id">
+			<ion-content class="padding owt-details">
+	  			<div>
+					<a id="owt-back-button" class="icon icon-left ion-arrow-left-a"
+						ng-click="placesDetailsBackButton()">Back</a>
+					</div>
+					<img class="float-left" ng-src="{{item.pic}}" style="width: 64px; height: 64px">
+					<a ng-click="add(item.id)">
+						<i class="icon select-icon" ng-class="addButtonClass(item.id)">
+						{{addButtonPos(item.id)}}</i>
+					</a>
+					<h2>{{item.name}}</h2>
+					<h3 class="text-left" ng-if="item.address">{{item.address}}</h3>
+					<!-- <h3 ng-if="item.type">{{item.type}}</h3> -->
+					<div class="clear"></div>
+					<p>
+						{{item.description}}
+					</p>
+				</div>
+			</ion-content>
+		</ion-slide-page>
+	</ion-slides>
+</ion-view>

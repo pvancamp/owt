@@ -84,7 +84,9 @@ angular.module('owt')
 	//Change to the details page
 	$scope.itemDetailsPage= function(itm) {
 		App.loadingShow();
-		$timeout(() => { $state.go('tab.places-detail', {id: itm.id}) });
+		Places.sel.detailsRet= $location.path();
+		Places.sel.detailsItem= itm;
+		$timeout(() => { $state.go('places-detail') });
 	};
 
 	//Return a list of all places

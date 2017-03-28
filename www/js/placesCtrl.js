@@ -14,19 +14,31 @@ angular.module('owt')
 
 })
 
-.controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $scope, $stateParams) {
+.controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $location, $ionicSlideBoxDelegate, $scope, $stateParams) {
 	angular.extend( $scope, PlacesCtrlSrv);
 	$scope.pageType= 'placesDetails';
 
 	$scope.$on('$ionicView.enter', function(e) {
 		App.loadingHide();
-		$scope.tabsHide(true);
+		if ( $stateParams.id ) $scope.tabsHide(true);
+		else if ( Places.sel && Places.sel.detailsItem ) {
+			$scope.item= Places.sel.detailsItem;
+			initIx= items.findIndex( (itm) => {return itm.id == $scope.item.id} );
+			$ionicSlideBoxDelegate.slide(initIx);
+			console.log('PlacesDetailsCtrl redirect', initIx, Places.sel.detailsItem.id, Places.sel.detailsRet);
+		}
 	});
 
-	$scope.item= Places.get( $stateParams.id );
-
 	var items= $scope.itemsFiltered();
-	var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
+	var initIx= 0;
+	if ( $stateParams.id ) {
+		$scope.item= Places.get( $stateParams.id );
+		initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
+	}
+
+	$scope.placesDetailsBackButton= function() {
+		 $location.path( Places.sel.detailsRet );
+	};
 
 	$scope.slider= {
 		options: {
@@ -48,7 +60,7 @@ angular.module('owt')
 		}
 	});
 
-	console.log('PlacesDetailsCtrl', $stateParams.id, items.length, initIx);
+	console.log('PlacesDetailsCtrl', $scope.item && $scope.item.id, items.length, initIx);
 })
 ;
 
