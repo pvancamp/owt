@@ -13,7 +13,7 @@ angular.module('owt')
 		saveSelListUI.managerF= false;
 		saveSelListUI.reorderActiveF= false;
 		
-		$scope.tabsHide(true);
+		if ( $scope.tabsHide ) $scope.tabsHide(true);
 		if ( saveSelListUI.initPlacesManF ) {
 			saveSelListUI.initPlacesManF= false;
 			modalToolbarSetState(1);
@@ -121,6 +121,7 @@ angular.module('owt')
 		case 11: //Create A Tour -- Step 2
 		case 12:
 			var nm= saveSelListUI.name && saveSelListUI.name.trim();
+			var places= [];
 			var tourplaces= $scope.saveSelListItems;
 			var tour= {
 				name: nm,
@@ -142,11 +143,11 @@ angular.module('owt')
 				});
 			}
 			else {
-				var places= [];
 				tourplaces.forEach( (itm) => {
 					places.push(itm.id);
 				});
 				var tourIx= Tours.add( tour );
+
 				$ionicPopup.alert({
 					title: 'Tour Creation Success',
 					template: 'Congratulations on successfully creating an awesome tour!',

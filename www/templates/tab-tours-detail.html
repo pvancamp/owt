@@ -3,8 +3,8 @@
 -->
 <ion-view view-title="{{item.name}}">
 	<ion-slides options="slider.options" slider="slider.delegate">
-		<ion-slide-page ng-repeat="item in itemsFiltered()">
-			<ion-content class="padding">
+		<ion-slide-page ng-repeat="item in itemsFiltered() track by item.id">
+			<ion-content class="padding owt-details">
 				<div>
 					<img class="float-left" ng-src="{{item.pic}}" style="width: 64px; height: 64px">
 					<a ng-click="add(item.id)">

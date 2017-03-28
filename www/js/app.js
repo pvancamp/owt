@@ -31,9 +31,10 @@ angular.module('owt', ['ionic'])
 			// org.apache.cordova.statusbar required
 			StatusBar.styleDefault();
 		}
-		if ( screen.lockOrientation ) {
+		if ( screen.orientation && screen.orientation.lock ) {
 			//always will be in portrait mode
-			screen.lockOrientation('portrait');
+			screen.orientation.lock('portrait');
+			console.log('run: Orientation is ' + screen.orientation.type);
 		}
 
 		$rootScope.tabsHide= function(val) {
@@ -62,13 +63,33 @@ angular.module('owt', ['ionic'])
 		templateUrl: 'templates/tabs.html'
 	})
 
-	// Each tab has its own nav history stack:
+	//settings
+	.state('tab.account', {
+		url: '/account',
+		views: {
+			'tab-account': {
+				templateUrl: 'templates/tab-account.html',
+				controller: 'AccountCtrl'
+			}
+		}
+	})
+
 	.state('tab.current', {
 		url: '/current',
 		views: {
 			'tab-current': {
 				templateUrl: 'templates/tab-current.html',
 				controller: 'ToursCtrl',
+			}
+		}
+	})
+
+	.state('tab.current-detail', {
+		url: '/current/:id',
+		views: {
+			'tab-current': {
+				templateUrl: 'templates/tab-tours-detail.html',
+				controller: 'ToursDetailsCtrl'
 			}
 		}
 	})
@@ -136,20 +157,12 @@ angular.module('owt', ['ionic'])
 		views: {
 			'tab-tours': {
 				templateUrl: 'templates/tab-tours-detail.html',
-				controller: 'ToursCtrl'
+				controller: 'ToursDetailsCtrl'
 			}
 		}
 	})
 
-	.state('tab.account', {
-		url: '/account',
-		views: {
-			'tab-account': {
-				templateUrl: 'templates/tab-account.html',
-				controller: 'AccountCtrl'
-			}
-		}
-	});
+	;
 
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/tab/dash');

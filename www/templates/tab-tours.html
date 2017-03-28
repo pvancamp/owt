@@ -1,7 +1,7 @@
 <ion-view view-title="Tours">
 	<ion-content>
 		<ion-list class="owt-list">
-			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="item in items track by item.id" type="item-text-wrap"
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="item in itemsFiltered() track by item.id" type="item-text-wrap"
 				href="#/tab/tours/{{item.id}}">
 				<img ng-src="{{item.pic}}">
 				<h2>{{item.name}}</h2>

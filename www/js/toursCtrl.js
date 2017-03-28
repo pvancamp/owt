@@ -2,9 +2,8 @@
 
 angular.module('owt')
 
-.controller('PlacesCtrl', function(App, Places, PlacesCtrlSrv, $scope) {
-	angular.extend( $scope, PlacesCtrlSrv);
-	$scope.pageType= 'places';
+.controller('ToursCtrl', function(App, Tours, $scope, $state, $timeout) {
+	$scope.pageType= 'tours';
 
 	$scope.$on('$ionicView.beforeEnter', function(e) {
 		App.loadingShow();
@@ -12,25 +11,50 @@ angular.module('owt')
 	$scope.$on('$ionicView.enter', function(e) {
 		//App.loadingHide();
 		App.loadingHide();
-		Places.saveSelListUI.managerF= false;
 		if ( $scope.tabsHide ) $scope.tabsHide(false);
 	});
 
+	$scope.current= function() {
+		return Tours.current();
+	};
+	$scope.currentName= function() {
+		return Tours.currentName();
+	};
+	$scope.currentDesc= function() {
+		return Tours.currentDesc();
+	};
+	$scope.currentDetails= function() {
+		var itm= Tours.currentItem();
+		if ( itm ) {
+			console.log('Tours swiping to:', itm);
+			App.loadingShow();
+			$timeout(() => { $state.go('tab.current-detail', {id: itm.id}) });
+		}
+	}
+
+	var items= Tours.all();
+	$scope.itemsFiltered= function() {
+		return items;
+	}
+
 })
 
-.controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $scope, $stateParams) {
-	angular.extend( $scope, PlacesCtrlSrv);
-	$scope.pageType= 'placesDetails';
+.controller('ToursDetailsCtrl', function(App, Tours, $scope, $stateParams) {
+	$scope.pageType= 'toursDetails';
 
 	$scope.$on('$ionicView.enter', function(e) {
 		App.loadingHide();
 		if ( $scope.tabsHide ) $scope.tabsHide(true);
 	});
 
-	$scope.item= Places.get( $stateParams.id );
+	$scope.item= Tours.get( $stateParams.id );
 
-	var items= $scope.itemsFiltered();
+	var items= Tours.all();
 	var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
+
+	$scope.itemsFiltered= function() {
+		return items;
+	}
 
 	$scope.slider= {
 		options: {
@@ -52,7 +76,7 @@ angular.module('owt')
 		}
 	});
 
-	console.log('PlacesDetailsCtrl', $stateParams.id, items.length, initIx);
+	console.log('ToursDetailsCtrl "'+$stateParams.id+'" select', initIx,"/",items.length);
 })
 ;
 

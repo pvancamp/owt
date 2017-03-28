@@ -294,6 +294,7 @@ input[type="text"], input[type="password"], textarea {
 .inline-table { display: inline-table !important;}
 .margin4 { margin: 4px; }
 .margin8 { margin: 8px; }
+.margin20 { margin: 20px; }
 .min-width-150 { min-width: 150px; }
 .pointer-events-auto { pointer-events: auto; }
 .position-relative { position: relative;}

@@ -174,16 +174,18 @@ angular.module('owt')
 	var srv= {
 		add: function(tour) {
 			var tours= items();
+			var toursList= itemsList();
 			if ( tours ) {
 				while( tours[nextIx] ) nextIx++;
 				tour.id= nextIx;
 				tours[nextIx]= tour;
 
-				itemsList().push(tour);
-				console.log('Added Tour', nextIx);
+				toursList.push(tour);
+				console.log('Added Tour', nextIx,'/', toursList.length);
 			}
 			return nextIx;
 		},
+
 		all: function() {
 			return itemsList();
 		},
@@ -202,6 +204,10 @@ angular.module('owt')
 				return tours[itemCurrent].description || dft;
 			}
 			return dft;
+		},
+		currentItem: function() {
+			var tours= items();
+			if ( tours && tours[itemCurrent] ) return tours[itemCurrent];
 		},
 		currentName: function() {
 			var dft= '*** No Name ***';
