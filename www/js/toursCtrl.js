@@ -12,25 +12,9 @@ angular.module('owt')
 		//App.loadingHide();
 		App.loadingHide();
 		if ( $scope.tabsHide ) $scope.tabsHide(false);
-	});
 
-	$scope.current= function() {
-		return Tours.current();
-	};
-	$scope.currentName= function() {
-		return Tours.currentName();
-	};
-	$scope.currentDesc= function() {
-		return Tours.currentDesc();
-	};
-	$scope.currentDetails= function() {
-		var itm= Tours.currentItem();
-		if ( itm ) {
-			console.log('Tours swiping to:', itm);
-			App.loadingShow();
-			$timeout(() => { $state.go('tab.current-detail', {id: itm.id}) });
-		}
-	}
+		$scope.selEnableF= true;
+	});
 
 	var items= Tours.all();
 	$scope.itemsFiltered= function() {
@@ -51,6 +35,24 @@ angular.module('owt')
 
 	var items= Tours.all();
 	var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
+
+	//Icon to show in selection position
+	$scope.addButtonClass= function(id, mode) {
+		var itm= Tours.get(id);
+		if ( itm ) {
+			if ( itm.sel ) return "black";
+			else if ( mode && itm.fav ) return "ion-ios-heart black";
+		}
+		return "ion-ios-checkmark-outline black";
+	};
+
+	//Return the position number if item is in the selection list
+	$scope.addButtonPos= function(id, deleteF) {
+		if ( deleteF ) return '';
+		var itm= Tours.get(id);
+		if ( itm && itm.sel ) return Tours.sel.list.indexOf(itm.id)+1;
+		return '';
+	};
 
 	$scope.itemsFiltered= function() {
 		return items;
@@ -88,5 +90,6 @@ angular.module('owt')
 
 	console.log('ToursDetailsCtrl "'+$stateParams.id+'" select', initIx,"/",items.length);
 })
+
 ;
 

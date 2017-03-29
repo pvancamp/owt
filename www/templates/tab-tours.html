@@ -5,11 +5,11 @@
 				href="#/tab/tours/{{item.id}}">
 				<img ng-src="{{item.pic}}">
 				<h2>{{item.name}}</h2>
-				<p>{{item.description || ' '}}</p>
+				<p ng-if="item.description">{{item.description}}</p>
+				<p ng-if="!item.description"><i>No description availible. Sorry.</i></p>
 				<a ng-click="add(item.id)">
 				<i class="icon" ng-class="addButtonClass(item.id)" style="right:40px"></i>
 				</a>
-				<i class="icon ion-chevron-right icon-accessory"></i>
 
 				<ion-option-button class="button-assertive" ng-click="remove(item)">
 					Delete

@@ -79,7 +79,7 @@ angular.module('owt', ['ionic'])
 		views: {
 			'tab-current': {
 				templateUrl: 'templates/tab-current.html',
-				controller: 'ToursCtrl',
+				controller: 'ToursGuidedCtrl',
 			}
 		}
 	})

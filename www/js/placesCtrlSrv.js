@@ -7,19 +7,6 @@ angular.module('owt')
 
 	var $scope= {pageType: null};
 
-	//add to selected list
-	$scope.add= function(id) {
-		//can not add or remove when in Places Manager Mode
-		if ( saveSelListUI.managerF ) return;
-
-		var itm= Places.get(id);
-		if ( itm ) {
-			itm.sel= ! itm.sel;
-			if ( itm.sel ) Places.sel.list.push(itm.id);
-			else Places.sel.list.splice( Places.sel.list.indexOf(itm.id), 1);
-		}
-	};
-
 	//Icon to show in selection position
 	$scope.addButtonClass= function(id, mode) {
 		var itm= Places.get(id);
@@ -39,16 +26,9 @@ angular.module('owt')
 	};
 
 	//Favs filer mode button
-	var filterFavsBlockF;
 	$scope.filterFavs= function() {
-		if ( filterFavsBlockF ) return;
 		Places.sel.filterFavs= !Places.sel.filterFavs;
 		$scope.selListFilterChg();
-		filterFavsBlockF= true;
-
-		//debounce this click
-		$timeout(function(){ filterFavsBlockF= false;},
-			1000);
 	};
 
 	//Icon to show for favs filter mode
@@ -138,11 +118,26 @@ angular.module('owt')
 		}
 	};
 
+	//add to selected list
+	$scope.selListAdd= function(id) {
+		//can not add or remove when in Places Manager Mode
+		console.log('selListAdd', saveSelListUI.managerF);
+		if ( saveSelListUI.managerF ) return;
+
+		var itm= Places.get(id);
+		if ( itm ) {
+			itm.sel= ! itm.sel;
+			if ( itm.sel ) Places.sel.list.push(itm.id);
+			else Places.sel.list.splice( Places.sel.list.indexOf(itm.id), 1);
+		}
+	};
+
 	//Called when the slection filter changes
 	$scope.selListFilterChg= function() {
 		var flt= saveSelListUI.filter && saveSelListUI.filter.trim().toLowerCase();
 		console.log('selListFilterChg', flt);
 		if ( flt || Places.sel.filterFavs ) {
+			App.loadingShow();
 			saveSelListUI.filter= flt;
 			var reduceF= false;
 			Places.sel.filterActive= true;
@@ -157,6 +152,9 @@ angular.module('owt')
 				//make sure we can see everything
 				$ionicScrollDelegate.scrollTop();
 			}
+
+			$timeout(function(){ App.loadingHide() });
+
 		}
 		else Places.sel.filterActive= false;
 		//console.log('selListFilterChg', Places.sel.filterActive, Places.sel.filterList.length);

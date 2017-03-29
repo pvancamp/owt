@@ -8,7 +8,7 @@
 			<ion-content class="padding owt-details">
 				<div>
 					<img class="float-left" ng-src="{{item.pic}}" style="width: 64px; height: 64px">
-					<a ng-click="add(item.id)">
+					<a ng-click="selListAdd(item.id)" ng-if="selEnableF">
 						<i class="icon icon-add float-right margin4 font28" ng-class="addButtonClass(item.id)">
 						{{addButtonPos(item.id)}}</i>
 					</a>

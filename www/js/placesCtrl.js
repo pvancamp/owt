@@ -43,6 +43,9 @@ angular.module('owt')
 
 	var items= $scope.itemsFiltered();
 	var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
+	
+	var cnt= 0;
+	items.forEach( (itm) => { itm.sliders= sliderIndicators(cnt++) } );
 
 	$scope.slider= {
 		options: {
@@ -57,7 +60,8 @@ angular.module('owt')
 	$scope.$watch('slider.delegate', function(newVal, oldVal) {
 		if (newVal != null) {
 			$scope.slider.delegate.on('slideChangeEnd', function() {
-				$scope.item= items[ $scope.slider.delegate.activeIndex ];
+				var ix= $scope.slider.delegate.activeIndex;
+				$scope.item= items[ix];
 				if ( mapMode ) gmapItem( $scope.item, false );
 				//use $scope.$apply() to refresh any content external to the slider
 				$scope.$apply();
@@ -68,10 +72,20 @@ angular.module('owt')
 	//Move the ion-content element downward
 	$scope.posIonContentStyle= function(place, heightF) {
 		var h;
-		if ( place == 2 ) h= (mapMode ? 200 : 0);
-		else if ( place == 1 ) h= (mapMode ? 44 : -200)+$scope.__headerHeight;
-		else h= $scope.__headerHeight; //iPhone pads header with extra area
-
+		switch ( place ) {
+		case 3:
+			h= $scope.__height - $scope.__headerHeight - 46;
+			break;
+		case 2:
+			h= (mapMode ? 200 : 0);
+			break;
+		case 1:
+			h= (mapMode ? 44 : -200)+$scope.__headerHeight;
+			break;
+		default:
+			h= $scope.__headerHeight; //iPhone pads header with extra area
+			break;
+		}
 		if ( heightF ) return {height: h+'px'};
 		return {top: h+'px'};
 	};
@@ -163,6 +177,12 @@ angular.module('owt')
 		}
 	}
 
+	function sliderIndicators(ix) {
+		if ( ix == 0 ) return 1;
+		else if ( ix == items.length -1)
+			return 2;
+		return 0;
+	}
 	console.log('PlacesDetailsCtrl', $stateParams.id, items.length, initIx);
 })
 ;
