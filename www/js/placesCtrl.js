@@ -42,8 +42,9 @@ angular.module('owt')
 	$scope.gmapData= { init: $scope.gmapInit, index: 'placesDetails' };
 
 	var items= $scope.itemsFiltered();
+	$scope.sliderCache= false; //used the cached html template
 	var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
-	
+
 	var cnt= 0;
 	items.forEach( (itm) => { itm.sliders= sliderIndicators(cnt++) } );
 
@@ -183,7 +184,7 @@ angular.module('owt')
 			return 2;
 		return 0;
 	}
-	console.log('PlacesDetailsCtrl', $stateParams.id, items.length, initIx);
+	console.log('PlacesDetailsCtrl Cache:', $scope.sliderCache, 'id:', $stateParams.id, initIx, '/', items.length);
 })
 ;
 

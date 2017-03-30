@@ -21,6 +21,7 @@ angular.module('owt')
 	$scope.addButtonPos= function(id, deleteF) {
 		if ( deleteF ) return '';
 		var itm= Places.get(id);
+		//console.log('addButtonPos', id, itm && itm.sel);
 		if ( itm && itm.sel ) return Places.sel.list.indexOf(itm.id)+1;
 		return '';
 	};
@@ -76,6 +77,15 @@ angular.module('owt')
 
 		return $scope.items();
 	};
+
+	//Return true is $scope.itemsFiltered is returning a reduced list
+	$scope.itemsFilteredFlag= function() {
+		if ( $location.path().indexOf('/places-edit') >= 0 )
+			return true;
+		if ( Places.sel && Places.sel.filterActive )
+			return true;
+		return false;
+	}
 
 	//change size of control area if map is visible (placesMan )
 	$scope.posControlAreaClass= function(op) {

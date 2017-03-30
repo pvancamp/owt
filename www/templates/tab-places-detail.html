@@ -19,17 +19,19 @@
 	<div class="owt-details-map owt-details-slide" ng-style="posIonContentStyle(1)" gmap="gmapData">
 	</div>
 	<div class="owt-details-slide" ng-style="posIonContentStyle(2, true)"></div>
-	<ion-slides options="slider.options" slider="slider.delegate">
-	  	<ion-slide-page ng-repeat="item in itemsFiltered() track by item.id">
+
+	<ng-include ng-if="sliderCache" src="'templates/owt-places-slides.html'"></ng-include>
+	<ion-slides options="slider.options" slider="slider.delegate"
+		ng-if="!sliderCache">
+	  	<ion-slide-page
+	  		ng-repeat="item in itemsFiltered() track by item.id">
 			<ion-content class="padding owt-details" ng-style="posIonContentStyle(3,true)">
 	  			<div>
 	  				<div class="position-relative">
 		  				<i class="icon ion-chevron-left slide-icons"
-		  					ng-if="item.sliders !=1"
-		  					style="left: -8px"></i>
+		  					ng-if="item.sliders !=1" style="left: -7px"></i>
 		  				<i class="icon ion-chevron-right slide-icons"
-		  					ng-if="item.sliders !=2"
-		  					style="right: -8px"></i>
+		  					ng-if="item.sliders !=2" style="right: -7px"></i>
 		  			</div>
 		  			<div class="right-padding"></div>
 					<button class="select-icon" ng-click="selListAdd(item.id)">

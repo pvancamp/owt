@@ -178,9 +178,11 @@
 	position: relative;
 	display: inline-table;
 	border: 0;
+	border-bottom: 1px groove #ddd;
 	color: black;
 	margin: 4px 0;
 	padding: 0;
+	padding-bottom: 2px;
 	cursor: pointer;
 	text-align: center;
 	font-size: 12px;
