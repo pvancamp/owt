@@ -35,6 +35,7 @@ angular.module('owt', ['ionic'])
 			ver: '0.2',
 			largePrint: false,
 			lang: 'A',
+			region: 'A',
 			streetViewEnable: false,
 		},
 	}

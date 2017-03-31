@@ -249,7 +249,7 @@
 }
 .item {
 	font-size: 14px;
-	padding: 10px;
+	padding: 2px 8px;
 }
 .item-avatar > img:first-child, .item-avatar .item-image,
  .item-avatar .item-content > img:first-child,
@@ -274,11 +274,13 @@
 	padding: 4px;
 	font-size: 18px;
 }
-
+.item-radio .item-content {
+	font-weight: normal;
+}
 .item-toggle, .toggle-small.item-toggle {
 	font-size: 14px;
 	min-height: 40px;
-	padding: 12px 99px 12px 8px;
+	padding: 12px 8px 12px 8px;
 	max-width: 440px
 }
 .item-toggle .toggle, .toggle-small.item-toggle .toggle {

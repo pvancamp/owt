@@ -12,7 +12,13 @@
 		</ion-item>
 
 		<ion-item>
-			<label class="font18">Choose Your Prefered Language:</label>
+			<label class="font14">Choose Your region:</label>
+			<ion-radio ng-model="app.settings.region" ng-value="'A'">Orlando</ion-radio>
+			<ion-radio ng-model="app.settings.region" ng-value="'B'">Orlando</ion-radio>
+			<ion-radio ng-model="app.settings.region" ng-value="'C'">Orlando</ion-radio>
+		</ion-item>
+		<ion-item>
+			<label class="font14">Choose Your Prefered Language:</label>
 			<ion-radio ng-model="app.settings.lang" ng-value="'A'">English</ion-radio>
 			<ion-radio ng-model="app.settings.lang" ng-value="'B'">English</ion-radio>
 			<ion-radio ng-model="app.settings.lang" ng-value="'C'">English</ion-radio>
