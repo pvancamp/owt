@@ -4,6 +4,7 @@ angular.module('owt')
 
 .controller('PlacesCtrl', function(App, Places, PlacesCtrlSrv, $scope) {
 	angular.extend( $scope, PlacesCtrlSrv);
+
 	$scope.pageType= 'places';
 
 	$scope.$on('$ionicView.beforeEnter', function(e) {
@@ -18,10 +19,7 @@ angular.module('owt')
 
 	//Move the ion-content element downward
 	$scope.posIonContentStyle= function(place, heightF) {
-		var h;
-		if ( place == 2 ) h= (mapMode ? 200 : 0);
-		else if ( place == 1 ) h= (mapMode ? 44 : -200)+$scope.__headerHeight;
-		else h= $scope.__headerHeight; //iPhone pads header with extra area
+		var h= $scope.__headerHeight; //iPhone pads header with extra area
 
 		if ( heightF ) return {height: h+'px'};
 		return {top: h+'px'};
@@ -29,13 +27,22 @@ angular.module('owt')
 
 })
 
-.controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $ionicPopup, $scope, $stateParams, $timeout) {
+.controller('PlacesDetailsCtrl', function(App, Places, PlacesCtrlSrv, $ionicPopup, $ionicScrollDelegate, $scope, $stateParams, $timeout) {
 	angular.extend( $scope, PlacesCtrlSrv);
 	$scope.pageType= 'placesDetails';
+
+	var gmap, gmapLoc, gmapMove;
 
 	$scope.$on('$ionicView.enter', function(e) {
 		App.loadingHide();
 		if ( $scope.tabsHide ) $scope.tabsHide(true);
+		gmap= Places.gmap.placesDetails;
+		if ( gmap ) {
+			//console.log('PlacesDetailsCtrl enter gmap settings', App.settings.streetViewEnable);
+			gmap.map.setOptions({
+				streetViewControl: App.settings.streetViewEnable,
+			});
+		}
 	});
 
 	$scope.item= Places.get( $stateParams.id );
@@ -65,6 +72,7 @@ angular.module('owt')
 				$scope.item= items[ix];
 				if ( mapMode ) gmapItem( $scope.item, false );
 				//use $scope.$apply() to refresh any content external to the slider
+				$ionicScrollDelegate.scrollTop();
 				$scope.$apply();
 			});
 		}
@@ -73,26 +81,32 @@ angular.module('owt')
 	//Move the ion-content element downward
 	$scope.posIonContentStyle= function(place, heightF) {
 		var h;
+		var showUpper= mapMode || $scope.picsMode;
+		var ret= {};
 		switch ( place ) {
 		case 3:
 			h= $scope.__height - $scope.__headerHeight - 46;
 			break;
 		case 2:
-			h= (mapMode ? 200 : 0);
+			h= ( showUpper ? 180 : 0);
+			ret['margin-bottom']= ( showUpper ? '20px' : '0');
 			break;
 		case 1:
-			h= (mapMode ? 44 : -200)+$scope.__headerHeight;
+			h= (mapMode ? 44 : -200) + $scope.__headerHeight;
 			break;
 		default:
 			h= $scope.__headerHeight; //iPhone pads header with extra area
 			break;
 		}
-		if ( heightF ) return {height: h+'px'};
-		return {top: h+'px'};
+		if ( heightF ) ret.height= h+'px';
+		else ret.top= h+'px';
+		return ret;
 	};
 
+	$scope.picsMode= true;
 	var mapMode= false;
 	var mapMeMode= false;
+	var mapStreetMode= false;
 	$scope.toolBarBut= function(op) {
 		switch( op ) {
 		case 0:
@@ -100,23 +114,26 @@ angular.module('owt')
 			break;
 		case 1:
 			$ionicPopup.alert({
-				title: 'Share A Place',
-				template: 'It is good to share!',
+				title: 'Take A Photo',
+				template: 'Save your own photo of this place.',
 			});
 			break;
 		case 2:
-			//camera
-			$ionicPopup.alert({
-				title: 'Take A Photo',
-				template: 'Someday you will be able to attach your own photo!',
-			});
+			//pictures
+			$scope.picsMode= ! $scope.picsMode;
+			if ( $scope.picsMode ) mapMode= false;
 			break;
 		case 3:
 			mapMode= !mapMode;
-			gmapItem( $scope.item, true );
+			if ( mapMode ) {
+				gmapItem( $scope.item, true );
+			}
 			break;
 		case 4:
 			mapMeMode= ! mapMeMode;
+			break;
+		case 5:
+			mapStreetMode= ! mapStreetMode;
 			break;
 		default:
 			mapMode= op;
@@ -128,24 +145,42 @@ angular.module('owt')
 			case 0: ii= 'ion-ios-heart';
 				if ( ! $scope.item.fav ) ii += '-outline'; //tool not enabled
 				break;
-			case 1: ii= 'ion-ios-cloud-upload-outline'; break;
-			case 2: ii= 'ion-ios-camera-outline';
+			case 1: ii= 'ion-ios-camera-outline'; break;
+			case 2: 
+				if ( $scope.picsMode ) ii= 'ion-android-arrow-dropup';
+				else ii= 'ion-ios-camera-outline';
 				break;
-			case 3: ii= 'ion-ios-world';
-				if (!mapMode) ii += '-outline'; //tool not enabled
+			case 3: 
+				if ( mapMode ) ii= 'ion-android-arrow-dropup';
+				else ii= 'ion-ios-world-outline'; //tool not enabled
 				break;
 			case 4: ii= 'ion-ios-navigate';
 				if (!mapMeMode) ii += '-outline'; //tool not enabled
+				break;
+			case 5: ii= 'ion-ios-body';
+				if (!mapStreetMode) ii += '-outline'; //tool not enabled
 				break;
 		}
 		return ii;		
 	};
 
-	var gmap, gmapLoc, gmapMove;
+	$scope.toolBarButText= function(op) {
+		var ii= '';
+		switch ( op ) {
+		case 1: return 'Take A Pic';
+		case 2:
+			if ( $scope.picsMode ) return 'No Pics';
+			else return 'Pics';
+		case 3:
+			if ( mapMode ) return 'No Map';
+			else return 'Map';
+		}
+	}
+
 	function gmapItem(vals, initF) {
 		if ( vals ) {
 			//map the place
-			console.log('PlacesDetails gmapItem', vals);
+			//console.log('PlacesDetails gmapItem', vals);
 			gmap= Places.gmap.placesDetails;
 			gmap.init();
 			var loc= {

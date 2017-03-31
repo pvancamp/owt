@@ -64,6 +64,7 @@ angular.module('owt')
 				angular.forEach( this.markers, (mkr) => {
 					mkr.m.setMap(null);
 				});
+				this.markers= [];
 			}
 		};
 
@@ -102,7 +103,7 @@ angular.module('owt')
 		};
 
 		this.init= function() {
-			console.log('gmap.init');
+			//console.log('gmap.init');
 			this.clearMarkers();
 			this.markers= null;
 			this.bounds= null;
@@ -137,7 +138,6 @@ angular.module('owt')
 				});
 			}
 		};
-
 	}
 
 	return {

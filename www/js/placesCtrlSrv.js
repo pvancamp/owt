@@ -27,9 +27,14 @@ angular.module('owt')
 	};
 
 	//Favs filer mode button
+	var filterFavsDebounce= false;
 	$scope.filterFavs= function() {
+		if ( filterFavsDebounce ) return;
+
 		Places.sel.filterFavs= !Places.sel.filterFavs;
 		$scope.selListFilterChg();
+		filterFavsDebounce= true;
+		$timeout(function() { filterFavsDebounce= false }, 1000);
 	};
 
 	//Icon to show for favs filter mode
@@ -44,8 +49,9 @@ angular.module('owt')
 			clickableIcons: true,
 			disableDoubleClickZoom: false,
 			fullscreenControl: true,
-			streetViewControl: true,
+			zoomControl: true,
 		});
+
 		if ( ! Places.gmap ) Places.gmap= {};
 
 		var gmap= new GmapUtils.mapMan( gg );
@@ -53,8 +59,8 @@ angular.module('owt')
 		if ( $scope.gmapInitCbk ) {
 			$scope.gmapInitCbk( gmap );
 		}
-		console.log('gmapInit index:', index);
-	}
+		console.log('gmapInit index:', index );
+	};
 
 	//Change to the details page
 	$scope.itemDetailsPage= function(itm) {

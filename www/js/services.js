@@ -32,33 +32,6 @@ angular.module('owt')
 	};
 })
 
-.factory('App', function(owtFirebase, $ionicLoading, $q, $rootScope) {
-
-	return {
-		//return the logged in uesr if logged in
-		authUser: function() { return owtFirebase.authUser; },
-
-		//Take down the spinner
-		loadingHide: function() { $ionicLoading.hide() },
-
-		//Put up the spinner to show that program is waiting for something
-		loadingShow: function() {
-			$ionicLoading.show({
-				template: '<ion-spinner></ion-spinner> &nbsp;Waiting ...'
-			});
-		},
-
-		//Put up the spinner and return a promise that can be used to
-		// cancel http operation
-		loadingShowWithCanceler: function() {
-			var canceler= $q.defer();
-			$rootScope.waitingWithCancel( canceler );
-			return canceler.promise;
-		},
-	}
-
-})
-
 .factory('Places', function(owtFirebase, $ionicLoading, $rootScope) {
 	var itemsAsObj, itemsAsList, itemsLoaded;
 

@@ -1,0 +1,33 @@
+<ion-view view-title="Settings">
+  <ion-content>
+	<ion-list>
+		<ion-item>
+			<ion-toggle class="item-text-wrap" ng-model="app.settings.streetViewEnable">
+					Enable Street View<br/>
+					<b>Warning:</b><br/>&nbsp;&nbsp; This feature may make app unstable.
+			</ion-toggle>
+			<ion-toggle  ng-model="app.settings.largePring">
+				Large Print
+			</ion-toggle>
+		</ion-item>
+
+		<ion-item>
+			<label class="font18">Choose Your Prefered Language:</label>
+			<ion-radio ng-model="app.settings.lang" ng-value="'A'">English</ion-radio>
+			<ion-radio ng-model="app.settings.lang" ng-value="'B'">English</ion-radio>
+			<ion-radio ng-model="app.settings.lang" ng-value="'C'">English</ion-radio>
+		</ion-item>
+		<ion-item>
+			<label>Software Version:</label> {{app.settings.ver}}
+		</ion-item>
+
+	<!--
+	<ion-item>
+		<button class="button button-positive margin20" ng-click="changeOriantationLandspace()">Landspace Mode</button>
+		<button class="button button-positive margin20" ng-click="changeOriantationPortrait()">Portrait Mode</button>
+	</ion-item>
+	-->
+
+	</ion-list>
+  </ion-content>
+</ion-view>

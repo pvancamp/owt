@@ -7,9 +7,44 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('owt', ['ionic'])
 
-.run(function($ionicPlatform, $rootScope, $window) {
+.factory('App', function(owtFirebase, $ionicLoading, $q, $rootScope) {
+
+	return {
+		//return the logged in uesr if logged in
+		authUser: function() { return owtFirebase.authUser; },
+
+		//Take down the spinner
+		loadingHide: function() { $ionicLoading.hide() },
+
+		//Put up the spinner to show that program is waiting for something
+		loadingShow: function() {
+			$ionicLoading.show({
+				template: '<ion-spinner></ion-spinner> &nbsp;Waiting ...'
+			});
+		},
+
+		//Put up the spinner and return a promise that can be used to
+		// cancel http operation
+		loadingShowWithCanceler: function() {
+			var canceler= $q.defer();
+			$rootScope.waitingWithCancel( canceler );
+			return canceler.promise;
+		},
+
+		settings: {
+			ver: '0.2',
+			largePrint: false,
+			lang: 'A',
+			streetViewEnable: false,
+		},
+	}
+
+})
+
+.run(function(App, $ionicPlatform, $rootScope, $window) {
 	$ionicPlatform.ready(function() {
 
+		$rootScope.app= App; //Give HTML access to App settings
 		$rootScope.__isIOS= ionic.Platform.isIOS();
 		$rootScope.__width= $window.innerWidth;
 		$rootScope.__height= $window.innerHeight;
@@ -61,17 +96,6 @@ angular.module('owt', ['ionic'])
 		url: '/tab',
 		abstract: true,
 		templateUrl: 'templates/tabs.html'
-	})
-
-	//settings
-	.state('tab.account', {
-		url: '/account',
-		views: {
-			'tab-account': {
-				templateUrl: 'templates/tab-account.html',
-				controller: 'AccountCtrl'
-			}
-		}
 	})
 
 	.state('tab.current', {
@@ -143,6 +167,17 @@ angular.module('owt', ['ionic'])
 		}
 	})
 
+	//settings
+	.state('tab.settings', {
+		url: '/settings',
+		views: {
+			'tab-settings': {
+				templateUrl: 'templates/tab-settings.html',
+				controller: 'SettingsCtrl'
+			}
+		}
+	})
+
 	.state('tab.tours', {
 		url: '/tours',
 		views: {
@@ -152,6 +187,7 @@ angular.module('owt', ['ionic'])
 			}
 		}
 	})
+	
 	.state('tab.tours-detail', {
 		url: '/tours/:id',
 		views: {

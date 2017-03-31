@@ -5,27 +5,31 @@
 	<div ng-style="posIonContentStyle(0, true)"></div>
 	<div class="owt-toolbar">
 		<a ng-click="toolBarBut(1)"><div class="but-toolbar" style="width:20%">
-			<i class="icon" ng-class="toolBarButClass(1)"></i><div>Share</div>
-		</div></a><a ng-click="toolBarBut(2)"><div class="but-toolbar" style="width:20%">
-			<i class="icon" ng-class="toolBarButClass(2)"></i><div>Take A Pic</div>
+			<i class="icon" ng-class="toolBarButClass(1)"></i><div>{{toolBarButText(1)}}</div>
 		</div></a><a ng-click="toolBarBut(3)"><div class="but-toolbar" style="width:20%">
-			<i class="icon" ng-class="toolBarButClass(3)"></i><div>Map</div>
+			<i class="icon" ng-class="toolBarButClass(3)"></i><div>{{toolBarButText(3)}}</div>
 		</div></a><a ng-click="toolBarBut(4)"><div class="but-toolbar" style="width:20%">
 			<i class="icon" ng-class="toolBarButClass(4)"></i><div>Map Me</div>
+		</div></a><a ng-click="toolBarBut(5)"><div class="but-toolbar" style="width:20%">
+			<i class="icon" ng-class="toolBarButClass(5)"></i><div>Street</div>
 		</div></a><a ng-click="toolBarBut(0)"><div class="but-toolbar" style="width:20%">
 			<i class="icon" ng-class="toolBarButClass(0)"></i><div>My Fav</div>
 		</div></a>
 	</div>
-	<div class="owt-details-map owt-details-slide" ng-style="posIonContentStyle(1)" gmap="gmapData">
+	<div class="owt-details-map owt-details-slide" ng-style="posIonContentStyle(1)">
+		<div class="owt-details-map" gmap="gmapData"></div>
 	</div>
-	<div class="owt-details-slide" ng-style="posIonContentStyle(2, true)"></div>
 
-	<ng-include ng-if="sliderCache" src="'templates/owt-places-slides.html'"></ng-include>
+	<ng-include ng-if="sliderCache" src="'templates/cache-places-slides.html'"></ng-include>
 	<ion-slides options="slider.options" slider="slider.delegate"
 		ng-if="!sliderCache">
 	  	<ion-slide-page
 	  		ng-repeat="item in itemsFiltered() track by item.id">
 			<ion-content class="padding owt-details" ng-style="posIonContentStyle(3,true)">
+				<div class="owt-details-pics owt-details-slide" ng-style="posIonContentStyle(2, true)">
+					<br/>
+					<h3>Pictures Go Here</h3>
+				</div>
 	  			<div>
 	  				<div class="position-relative">
 		  				<i class="icon ion-chevron-left slide-icons"
