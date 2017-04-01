@@ -75,7 +75,7 @@ angular.module('owt')
 
 	//Return a list of places of interest
 	$scope.itemsFiltered= function() {
-		if ( $location.path().indexOf('/places-edit') >= 0 )
+		if ( $location.path().indexOf('/places-man') >= 0 )
 			return $scope.saveSelListItems;
 
 		if ( Places.sel && Places.sel.filterActive )
@@ -86,7 +86,7 @@ angular.module('owt')
 
 	//Return true is $scope.itemsFiltered is returning a reduced list
 	$scope.itemsFilteredFlag= function() {
-		if ( $location.path().indexOf('/places-edit') >= 0 )
+		if ( $location.path().indexOf('/places-man') >= 0 )
 			return true;
 		if ( Places.sel && Places.sel.filterActive )
 			return true;
@@ -123,7 +123,7 @@ angular.module('owt')
 			saveSelListUI.initPlacesManF= true;
 			saveSelListUI.placesPageSwitchRet= $location.path();
 			console.log('placesPageSwitch', saveSelListUI.placesPageSwitchRet);
-			$location.path('/tab/places-edit');
+			$location.path('/tab/places-man');
 		} else {
 			//clear the list of selected
 			Places.sel.list.forEach( (id) => {

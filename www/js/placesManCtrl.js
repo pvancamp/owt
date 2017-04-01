@@ -84,7 +84,7 @@ angular.module('owt')
 		console.log('saveSelListClick', itm.id, 'mapMode:', saveSelListUI.mapMode);
 		saveSelListUI.lastClick= itm.id;
 		if ( op || saveSelListUI.mapMode < 2 )
-			$state.go('tab.places-edit-detail', {id: itm.id});
+			$state.go('tab.places-man-detail', {id: itm.id});
 		else if ( saveSelListUI.mapMode == 2)
 			gmapModeSet(2);
 	};

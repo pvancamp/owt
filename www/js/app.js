@@ -9,7 +9,7 @@ angular.module('owt', ['ionic'])
 
 .factory('App', function(owtFirebase, $ionicLoading, $q, $rootScope) {
 
-	return {
+	var app= {
 		//return the logged in uesr if logged in
 		authUser: function() { return owtFirebase.authUser; },
 
@@ -35,17 +35,19 @@ angular.module('owt', ['ionic'])
 			ver: '0.2',
 			largePrint: false,
 			lang: 'A',
-			region: 'A',
+			region: 'B',
 			streetViewEnable: false,
 		},
-	}
+	};
 
+	$rootScope.app= app; //Give HTML access to App settings
+	return app;
 })
 
 .run(function(App, $ionicPlatform, $rootScope, $window) {
 	$ionicPlatform.ready(function() {
 
-		$rootScope.app= App; //Give HTML access to App settings
+		
 		$rootScope.__isIOS= ionic.Platform.isIOS();
 		$rootScope.__width= $window.innerWidth;
 		$rootScope.__height= $window.innerHeight;
@@ -148,20 +150,20 @@ angular.module('owt', ['ionic'])
 		}
 	})
 
-	.state('tab.places-edit', {
-		url: '/places-edit',
+	.state('tab.places-man', {
+		url: '/places-man',
 		views: {
-			'tab-places-edit': {
+			'tab-places-man': {
 				templateUrl: 'templates/modal-savePlaces.html',
 				controller: 'PlacesManCtrl',
 			}
 		}
 	})
 
-	.state('tab.places-edit-detail', {
-		url: '/places-edit/:id',
+	.state('tab.places-man-detail', {
+		url: '/places-man/:id',
 		views: {
-			'tab-places-edit': {
+			'tab-places-man': {
 				templateUrl: 'templates/tab-places-detail.html',
 				controller: 'PlacesDetailsCtrl',
 			}
