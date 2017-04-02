@@ -4,8 +4,8 @@
 <ion-view view-title="{{item.name}}">
 	<div ng-style="posIonContentStyle(0, true)"></div>
 	<div class="owt-toolbar">
-		<a ng-click="toolBarBut(1)"><div class="but-toolbar" style="width:20%">
-			<i class="icon" ng-class="toolBarButClass(1)"></i><div>{{toolBarButText(1)}}</div>
+		<a ng-click="toolBarBut(2)"><div class="but-toolbar" style="width:20%">
+			<i class="icon" ng-class="toolBarButClass(2)"></i><div>{{toolBarButText(2)}}</div>
 		</div></a><a ng-click="toolBarBut(3)"><div class="but-toolbar" style="width:20%">
 			<i class="icon" ng-class="toolBarButClass(3)"></i><div>{{toolBarButText(3)}}</div>
 		</div></a><a ng-click="toolBarBut(4)"><div class="but-toolbar" style="width:20%">
@@ -16,17 +16,28 @@
 			<i class="icon" ng-class="toolBarButClass(0)"></i><div>My Fav</div>
 		</div></a>
 	</div>
-	<div class="owt-details-map owt-details-slide" ng-style="posIonContentStyle(1)">
-		<div class="owt-details-map" gmap="gmapData"></div>
+	<div class='position-relative'>
+		<div class="owt-details-tray" ng-style="posIonContentStyle(1)">
+			<div class="sizeMax" gmap="gmapData"></div>
+		</div>
+		<div class="owt-details-tray" ng-style="posIonContentStyle(2)">
+			<div class="sizeMax owt-details-yourpics">
+				<button class="owt-details-photo-add">
+					<i class="icon ion-ios-plus-outline"></i>
+				</button>
+				<br/>
+				<br/>
+				<h3>Your Pictures Go Here</h3>
+			</div>
+		</div>
 	</div>
-
 	<ng-include ng-if="sliderCache" src="'templates/cache-places-slides.html'"></ng-include>
 	<ion-slides options="slider.options" slider="slider.delegate"
 		ng-if="!sliderCache">
 	  	<ion-slide-page
 	  		ng-repeat="item in itemsFiltered() track by item.id">
 			<ion-content class="padding owt-details" ng-style="posIonContentStyle(3,true)">
-				<div class="owt-details-pics owt-details-slide" ng-style="posIonContentStyle(2, true)">
+				<div class="owt-details-pics">
 					<br/>
 					<h3>Pictures Go Here</h3>
 				</div>

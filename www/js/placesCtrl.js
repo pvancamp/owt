@@ -81,18 +81,16 @@ angular.module('owt')
 	//Move the ion-content element downward
 	$scope.posIonContentStyle= function(place, heightF) {
 		var h;
-		var showUpper= mapMode || $scope.picsMode;
 		var ret= {};
 		switch ( place ) {
 		case 3:
 			h= $scope.__height - $scope.__headerHeight - 46;
 			break;
 		case 2:
-			h= ( showUpper ? 180 : 0);
-			ret['margin-bottom']= ( showUpper ? '20px' : '0');
+			h= (picsMode ? -4 : -200 - $scope.__headerHeight);
 			break;
 		case 1:
-			h= (mapMode ? 44 : -200) + $scope.__headerHeight;
+			h= (mapMode ? -4 : -200 - $scope.__headerHeight);
 			break;
 		default:
 			h= $scope.__headerHeight; //iPhone pads header with extra area
@@ -103,7 +101,7 @@ angular.module('owt')
 		return ret;
 	};
 
-	$scope.picsMode= true;
+	var picsMode= false;
 	var mapMode= false;
 	var mapMeMode= false;
 	var mapStreetMode= false;
@@ -120,12 +118,13 @@ angular.module('owt')
 			break;
 		case 2:
 			//pictures
-			$scope.picsMode= ! $scope.picsMode;
-			if ( $scope.picsMode ) mapMode= false;
+			picsMode= ! picsMode;
+			if ( picsMode ) mapMode= false;
 			break;
 		case 3:
 			mapMode= !mapMode;
 			if ( mapMode ) {
+				picsMode= false;
 				gmapItem( $scope.item, true );
 			}
 			break;
@@ -147,7 +146,7 @@ angular.module('owt')
 				break;
 			case 1: ii= 'ion-ios-camera-outline'; break;
 			case 2: 
-				if ( $scope.picsMode ) ii= 'ion-android-arrow-dropup';
+				if ( picsMode ) ii= 'ion-android-arrow-dropup';
 				else ii= 'ion-ios-camera-outline';
 				break;
 			case 3: 
@@ -169,7 +168,7 @@ angular.module('owt')
 		switch ( op ) {
 		case 1: return 'Take A Pic';
 		case 2:
-			if ( $scope.picsMode ) return 'No Pics';
+			if ( picsMode ) return 'No Pics';
 			else return 'Pics';
 		case 3:
 			if ( mapMode ) return 'No Map';

@@ -27,18 +27,45 @@ angular.module('owt', ['ionic'])
 		// cancel http operation
 		loadingShowWithCanceler: function() {
 			var canceler= $q.defer();
-			$rootScope.waitingWithCancel( canceler );
+			waitingWithCancel( canceler );
 			return canceler.promise;
 		},
 
 		settings: {
-			ver: '0.2',
+			ver: '0.3',
 			largePrint: false,
 			lang: 'A',
 			region: 'B',
 			streetViewEnable: false,
 		},
+
+		//callback used to cancel via the stored promise: app.wwcCancelCbk
+		wwcCbk: function() {
+			switch( app.wwcState++ ) {
+			case 0:
+				// one more tap needed to cancel
+				app.wwcTxt='Tap To Abort ...';
+				break;
+			case 1:
+				$ionicLoading.hide();
+				if ( app.wwcCancelCbk ) {
+					//console.log('wwcCbk calling resolve on cancel promise');
+					app.wwcCancelCbk.resolve();
+				}
+				break;
+			}
+		},
+
 	};
+
+	//sets up canceler callback used to cancel http operation
+	function waitingWithCancel( cancelCbk ) {
+		//console.log('waitingWithCancel');
+		app.wwcCancelCbk= cancelCbk;
+		app.wwcState= 0;
+		app.wwcTxt= 'Waiting ...';
+		$ionicLoading.show({ template: '<a ng-click="app.wwcCbk()" style="z-index:500"><ion-spinner></ion-spinner> {{app.wwcTxt}}</a>' });
+	}
 
 	$rootScope.app= app; //Give HTML access to App settings
 	return app;
