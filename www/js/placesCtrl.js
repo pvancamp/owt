@@ -70,13 +70,31 @@ angular.module('owt')
 			$scope.slider.delegate.on('slideChangeEnd', function() {
 				var ix= $scope.slider.delegate.activeIndex;
 				$scope.item= items[ix];
-				if ( mapMode ) gmapItem( $scope.item, false );
+				if ( mapMode ) {
+					gmapItem( $scope.item, false );
+					//turn off directions
+					if ( mapMode === 2 ) mapMode= true;
+				}
 				//use $scope.$apply() to refresh any content external to the slider
 				$ionicScrollDelegate.scrollTop();
 				$scope.$apply();
 			});
 		}
 	});
+
+	$scope.mapDirectionsClass= function() {
+		if ( mapMode !== 2 ) return 'owt-details-map-disable';
+		return '';
+	};
+
+	//directions button was clicked
+	$scope.mapDirectionsMode= function() {
+		console.log('mapDirectionsMode');
+		if ( ! mapMode ) return;
+
+		if ( mapMode === 2 ) mapMode= true;
+		else mapMode= 2; //turn on directions
+	};
 
 	//Move the ion-content element downward
 	$scope.posIonContentStyle= function(place, heightF) {
@@ -90,7 +108,8 @@ angular.module('owt')
 			h= (picsMode ? -4 : -200 - $scope.__headerHeight);
 			break;
 		case 1:
-			h= (mapMode ? -4 : -200 - $scope.__headerHeight);
+			h= (mapMode ? (mapMode === 2 ? -4 : -204 ) 
+				: -400 - $scope.__headerHeight);
 			break;
 		default:
 			h= $scope.__headerHeight; //iPhone pads header with extra area
@@ -111,10 +130,6 @@ angular.module('owt')
 			$scope.item.fav= ! $scope.item.fav;
 			break;
 		case 1:
-			$ionicPopup.alert({
-				title: 'Take A Photo',
-				template: 'Save your own photo of this place.',
-			});
 			break;
 		case 2:
 			//pictures
@@ -134,9 +149,7 @@ angular.module('owt')
 		case 5:
 			mapStreetMode= ! mapStreetMode;
 			break;
-		default:
-			mapMode= op;
-		}
+		};
 	};
 	$scope.toolBarButClass= function(op) {
 		var ii= '';
@@ -144,7 +157,7 @@ angular.module('owt')
 			case 0: ii= 'ion-ios-heart';
 				if ( ! $scope.item.fav ) ii += '-outline'; //tool not enabled
 				break;
-			case 1: ii= 'ion-ios-camera-outline'; break;
+			case 1: ii= 'ion-ios-cloud-upload-outline'; break;
 			case 2: 
 				if ( picsMode ) ii= 'ion-android-arrow-dropup';
 				else ii= 'ion-ios-camera-outline';

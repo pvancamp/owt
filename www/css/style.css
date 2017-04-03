@@ -56,6 +56,36 @@
 	color: #333;
 	font-style: italic;
 }
+.owt-details-map {
+	height: 200px;
+	width: 100%
+}
+.owt-details-map-but {
+	background-color: #fff;
+	border: 1px dotted #222;
+	position: absolute;
+	left: 5px;
+	pointer-events: auto;
+	z-index: 4;	
+}
+.owt-details-map-but-directions {
+	top: 210px;
+}
+.owt-details-map-but-mapme {
+	top: 340px;
+}
+.owt-details-map-directions {
+	height: 200px;
+	width: 100%;
+	background-color: #fff;
+}
+.owt-details-map-disable {
+	pointer-events: none;
+	background-color: transparent;
+}
+.owt-details-maparea {
+	height: 400px;
+}
 .owt-details-photo-add {
 	position: absolute;
 	top: 10px;
@@ -84,15 +114,21 @@
 	position: absolute;
 	height: 200px;
 	width: 100%;
+	pointer-events: none;
 	z-index: 3;
 
 	-webkit-transition: 0.5s ease-in-out;
 	-moz-transition: 0.5s ease-in-out;
 	transition: 0.5s ease-in-out;
 }
+.owt-details-tray-map {
+	height: 300px;
+}
 .owt-details-yourpics {
 	border: 1px solid black ;
 	background-color: #dde0e0;
+	width: 100%;
+	height: 100%;
 }
 .owt-list .item h2 { font-size: 14px; text-align: left; }
 .owt-list .item p { font-size: 11px;}
@@ -372,7 +408,8 @@ input[type="text"], input[type="password"], textarea {
 .font18 { font-size: 18px; }
 .font24 { font-size: 24px; }
 .font28 { font-size: 28px; }
-.heightMax { height: 100%; }
+.grey { color: lightgrey !important; }
+.heightMax { height: 100%;}
 .inline-30 {display: inline-block !important; width:30%;}
 .inline-70 {display: inline-block !important; width:70%;}
 .inline-block { display: inline-block !important;}
@@ -382,6 +419,7 @@ input[type="text"], input[type="password"], textarea {
 .margin20 { margin: 20px; }
 .min-width-150 { min-width: 150px; }
 .pointer-events-auto { pointer-events: auto; }
+.pointer-events-none { pointer-events: none; }
 .position-relative { position: relative;}
 .red { color: red; }
 .sizeMax { width: 100%; height: 100%; }
