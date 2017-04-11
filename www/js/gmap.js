@@ -29,21 +29,22 @@ angular.module('owt')
 	}
 
 	function mapMan(mapObj) {
-		this.map= mapObj;
+		var self= this;
+		self.map= mapObj;
 
-		this.addMarker= function( key, loc ) {
+		self.addMarker= function( key, loc ) {
 			if ( !key ) return;
-			if ( ! this.markers ) this.markers= {};
-			var mkr= this.loc2marker( loc );
+			if ( ! self.markers ) self.markers= {};
+			var mkr= self.loc2marker( loc );
 			if ( mkr ) {
-				this.markers[key]= { m: mkr };
+				self.markers[key]= { m: mkr };
 			}
 		};
 
-		this.allMarkersVisible= function(viz) {
+		self.allMarkersVisible= function(viz) {
 			var mlist= [];
-			if ( this.markers ) {
-				angular.forEach( this.markers, (mkr) => {
+			if ( self.markers ) {
+				angular.forEach( self.markers, (mkr) => {
 					mlist.push( mkr );
 				});
 			}
@@ -52,26 +53,26 @@ angular.module('owt')
 			});
 		},
 
-		this.clearOneMarker= function(which) {
-			if ( this.markers ) {
-				this.markers[which].m.setMap(null);
-				delete this.markers[which];
+		self.clearOneMarker= function(which) {
+			if ( self.markers ) {
+				self.markers[which].m.setMap(null);
+				delete self.markers[which];
 			}
 		};
 
-		this.clearMarkers= function() {
-			if ( this.markers ) {
-				angular.forEach( this.markers, (mkr) => {
+		self.clearMarkers= function() {
+			if ( self.markers ) {
+				angular.forEach( self.markers, (mkr) => {
 					mkr.m.setMap(null);
 				});
-				this.markers= [];
+				self.markers= [];
 			}
 		};
 
-		this.fitToMarkers= function() {
+		self.fitToMarkers= function() {
 			var mlist= [];
-			if ( this.markers ) {
-				angular.forEach( this.markers, (mkr) => {
+			if ( self.markers ) {
+				angular.forEach( self.markers, (mkr) => {
 					mlist.push( mkr );
 				});
 			}
@@ -84,32 +85,32 @@ angular.module('owt')
 						lat: 28.540303,
 						lng: -81.38080,
 					};
-					marker= this.loc2marker(loc);
+					marker= self.loc2marker(loc);
 					marker.setVisible(false);
 				}
 				else marker= mlist[0].m;
 
-				this.map.setZoom(15);
-				this.map.setCenter( marker.getPosition() );
+				self.map.setZoom(15);
+				self.map.setCenter( marker.getPosition() );
 			} else {
-				if ( ! this.bounds )
-					this.bounds= new google.maps.LatLngBounds();
+				if ( ! self.bounds )
+					self.bounds= new google.maps.LatLngBounds();
 
 				mlist.forEach( (mkr) => {
-					this.bounds.extend( mkr.m.getPosition() );
+					self.bounds.extend( mkr.m.getPosition() );
 				});
-				this.map.fitBounds(this.bounds);
+				self.map.fitBounds(self.bounds);
 			}
 		};
 
-		this.init= function() {
+		self.init= function() {
 			//console.log('gmap.init');
-			this.clearMarkers();
-			this.markers= null;
-			this.bounds= null;
+			self.clearMarkers();
+			self.markers= null;
+			self.bounds= null;
 		};
 
-		this.loc2marker= function( loc ) {
+		self.loc2marker= function( loc ) {
 			//console.log('loc2marker', loc);
 			if ( ! loc.lat || ! loc.lng ) return;
 
@@ -118,22 +119,22 @@ angular.module('owt')
 				position: myLatLng,
 				//icon: image(),
 				//shape: shape,
-				map: this.map,
+				map: self.map,
 				title: loc.name,
 			};
 			return new google.maps.Marker( markerInfo );
 		};
 
-		this.moveToLocation= function(loc) {
+		self.moveToLocation= function(loc) {
 			if ( ! loc.lat || ! loc.lng ) return;
 			var myLatLng = new google.maps.LatLng(loc.lat, loc.lng);
 
-			this.map.setCenter( myLatLng );
+			self.map.setCenter( myLatLng );
 		};
 
-		this.oneMarkerVisible= function(which) {
-			if ( this.markers ) {
-				angular.forEach( this.markers, (mkr, key) => {
+		self.oneMarkerVisible= function(which) {
+			if ( self.markers ) {
+				angular.forEach( self.markers, (mkr, key) => {
 					mkr.m.setVisible(which == key);
 				});
 			}

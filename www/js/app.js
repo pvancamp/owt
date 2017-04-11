@@ -6,10 +6,18 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('owt', ['ionic'])
-
+.controller('AppCtrl', function(App, $scope) {
+	$scope.app= App; //Give HTML access to App settings
+})
 .factory('App', function(owtFirebase, $ionicLoading, $q, $rootScope) {
 
 	var app= {
+		appStyle: function() {
+			var ss= {};
+			if ( app.settings.largePrint )
+				ss['zoom']= 1.2;
+			return ss;
+		},
 		//return the logged in uesr if logged in
 		authUser: function() { return owtFirebase.authUser; },
 
@@ -67,7 +75,6 @@ angular.module('owt', ['ionic'])
 		$ionicLoading.show({ template: '<a ng-click="app.wwcCbk()" style="z-index:500"><ion-spinner></ion-spinner> {{app.wwcTxt}}</a>' });
 	}
 
-	$rootScope.app= app; //Give HTML access to App settings
 	return app;
 })
 
