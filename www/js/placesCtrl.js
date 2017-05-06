@@ -53,7 +53,8 @@ angular.module('owt')
 	var initIx= items.findIndex( (itm) => {return itm.id == $stateParams.id} );
 
 	var cnt= 0;
-	items.forEach( (itm) => { itm.sliders= sliderIndicators(cnt++) } );
+	items.forEach( (itm) => { itm.sliders= sliderIndicators(cnt++); itm.render= false; } );
+	itemRenderEnable( initIx );
 
 	$scope.slider= {
 		options: {
@@ -70,6 +71,8 @@ angular.module('owt')
 			$scope.slider.delegate.on('slideChangeEnd', function() {
 				var ix= $scope.slider.delegate.activeIndex;
 				$scope.item= items[ix];
+				itemRenderEnable( ix );
+
 				if ( mapMode ) {
 					gmapItem( $scope.item, false );
 					//turn off directions
@@ -189,6 +192,18 @@ angular.module('owt')
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////
+	//Utilites
+
+	//To speed up page switching details are not rendered until they are in view
+	//or near to be in view.
+	function itemRenderEnable(ix) {
+		for ( var ii= ix-1; ii <= ix+1; ii++) {
+			var itm= items[ii];
+			if ( itm ) itm.render= true;
+		}
+	}
+
 	function gmapItem(vals, initF) {
 		if ( vals ) {
 			//map the place
@@ -225,13 +240,14 @@ angular.module('owt')
 		}
 	}
 
+	//first and last items do not get both slider indicator markings
 	function sliderIndicators(ix) {
 		if ( ix == 0 ) return 1;
 		else if ( ix == items.length -1)
 			return 2;
 		return 0;
 	}
-	console.log('PlacesDetailsCtrl Cache:', $scope.sliderCache, 'id:', $stateParams.id, initIx, '/', items.length);
+	//console.log('PlacesDetailsCtrl Cache:', $scope.sliderCache, 'id:', $stateParams.id, initIx, '/', items.length);
 })
 ;
 

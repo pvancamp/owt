@@ -44,41 +44,41 @@
 			</div>
 		</div>
 	</div>
-	<ng-include ng-if="sliderCache" src="'templates/cache-places-slides.html'"></ng-include>
-	<ion-slides options="slider.options" slider="slider.delegate"
-		ng-if="!sliderCache">
+	<ion-slides options="slider.options" slider="slider.delegate">
 	  	<ion-slide-page
 	  		ng-repeat="item in itemsFiltered() track by item.id">
 			<ion-content class="padding owt-details" ng-style="posIonContentStyle(3,true)">
-				<div class="owt-details-pics">
-					<br/>
-					<h3>Pictures Go Here</h3>
-				</div>
-	  			<div>
-	  				<div class="position-relative">
-		  				<i class="icon ion-chevron-left slide-icons"
-		  					ng-if="item.sliders !=1" style="left: -7px"></i>
-		  				<i class="icon ion-chevron-right slide-icons"
-		  					ng-if="item.sliders !=2" style="right: -7px"></i>
-		  			</div>
-		  			<div class="right-padding"></div>
-					<button class="select-icon" ng-click="selListAdd(item.id)">
-						<i class="icon" ng-class="addButtonClass(item.id)">
-							{{addButtonPos(item.id)}}</i>
-					</button>
-					<h2>{{item.name}}</h2>
-
-					<div class="float-left">
-						<img ng-src="{{item.pic}}">
+				<div ng-if="item.render">
+					<div class="owt-details-pics">
+						<br/>
+						<h3>Pictures Go Here</h3>
 					</div>
-					<h3 class="text-left" ng-if="item.address">{{item.address}}</h3>
-					<!-- <h3 ng-if="item.type">{{item.type}}</h3> -->
-					<div class="clear"></div>
-					<br/>
-					<p>
-						{{item.description}}
-					</p>
-					<h3 class="swipe-notice"> <-- swipe to view other places --></h3>
+		  			<div>
+		  				<div class="position-relative">
+			  				<i class="icon ion-chevron-left slide-icons"
+			  					ng-if="item.sliders !=1" style="left: -7px"></i>
+			  				<i class="icon ion-chevron-right slide-icons"
+			  					ng-if="item.sliders !=2" style="right: -7px"></i>
+			  			</div>
+			  			<div class="right-padding"></div>
+						<button class="select-icon" ng-click="selListAdd(item.id)">
+							<i class="icon" ng-class="addButtonClass(item.id)">
+								{{addButtonPos(item.id)}}</i>
+						</button>
+						<h2>{{item.name}}</h2>
+
+						<div class="float-left">
+							<img ng-src="{{item.pic}}">
+						</div>
+						<h3 class="text-left" ng-if="item.address">{{item.address}}</h3>
+						<!-- <h3 ng-if="item.type">{{item.type}}</h3> -->
+						<div class="clear"></div>
+						<br/>
+						<p>
+							{{item.description}}
+						</p>
+						<h3 class="swipe-notice"> <-- swipe to view other places --></h3>
+					</div>
 				</div>
 			</ion-content>
 		</ion-slide-page>

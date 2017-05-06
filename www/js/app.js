@@ -40,7 +40,7 @@ angular.module('owt', ['ionic'])
 		},
 
 		settings: {
-			ver: '0.3',
+			ver: '0.4',
 			largePrint: false,
 			lang: 'A',
 			region: 'B',
